@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        package="com.jmarzin.jmlangues">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+            android:icon="@drawable/icon"
+            android:label="@string/app_name"
+            android:supportsRtl="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            tools:ignore="GoogleAppIndexingWarning"
+            android:allowBackup="false">
+        <activity
+                android:name=".FormeActivity"
+                android:label="@string/title_activity_forme"
+                android:parentActivityName=".FormesActivity"
+                android:theme="@style/NoActionBar">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.jmarzin.jmlangues.FormesActivity" />
+        </activity>
+        <activity
+                android:name=".FormesActivity"
+                android:label="@string/title_activity_formes"
+                android:launchMode="singleTop"
+                android:parentActivityName=".MainActivity"
+                android:theme="@style/NoActionBar">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.jmarzin.jmlangues.MainActivity" />
+        </activity>
+        <activity
+                android:name=".MotActivity"
+                android:label="@string/title_activity_mot"
+                android:parentActivityName=".MotsActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.jmarzin.jmlangues.MotsActivity" />
+        </activity>
+        <activity
+                android:name=".ThemesActivity"
+                android:label="@string/title_activity_themes"
+                android:launchMode="singleTask"
+                android:parentActivityName=".MainActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.jmarzin.jmlangues.MainActivity" />
+        </activity>
+        <activity
+                android:name=".VerbesActivity"
+                android:label="@string/title_activity_verbes"
+                android:launchMode="singleTask"
+                android:parentActivityName=".MainActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.jmarzin.jmlangues.MainActivity" />
+        </activity>
+        <activity
+                android:name=".MotsActivity"
+                android:label="@string/title_activity_mots"
+                android:launchMode="singleTop"
+                android:parentActivityName=".MainActivity">
+
+            <!-- android:launchMode="singleTop" -->
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                    android:name="android.app.searchable"
+                    android:resource="@xml/searchable" />
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.jmarzin.jmlangues.MainActivity" />
+        </activity>
+        <activity
+                android:name=".FormesTypesActivity"
+                android:label="@string/title_activity_formes_types"
+                android:launchMode="singleTask"
+                android:parentActivityName=".MainActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.jmarzin.jmlangues.MainActivity" />
+        </activity>
+
+        <service
+                android:name=".MiseAJour"
+                android:exported="false" />
+
+        <activity
+                android:name=".MainActivity"
+                android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

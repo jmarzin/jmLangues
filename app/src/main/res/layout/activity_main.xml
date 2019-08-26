@@ -1,0 +1,266 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:layout_alignParentTop="true"
+              android:layout_centerHorizontal="true"
+              android:divider="@drawable/divider"
+              android:focusable="false"
+              android:showDividers="middle">
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/titre_langue"
+            android:id="@+id/t_langue"
+            android:elegantTextHeight="false"
+            android:textStyle="bold"
+            android:textSize="@dimen/abc_text_size_title_material"
+            android:gravity="center_horizontal"
+            android:paddingBottom="10dp"
+            tools:ignore="PrivateResource" />
+
+    <!--android:paddingTop="@dimen/abc_action_bar_default_padding_material"-->
+
+    <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+        <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+        <ImageButton
+                android:id="@+id/im_italien"
+                android:layout_width="@dimen/taille_drap"
+                android:layout_height="@dimen/taille_drap"
+                android:layout_column="1"
+                android:layout_gravity="right"
+                android:layout_span="1"
+                android:layout_weight="1"
+                android:background="#00ffffff"
+                android:baselineAlignBottom="false"
+                android:clickable="true"
+                android:contentDescription="@string/Italien"
+                android:nestedScrollingEnabled="true"
+                android:onClick="clickDrapeauItalien"
+                android:src="@drawable/italien" android:cropToPadding="false" android:adjustViewBounds="false"
+                android:scaleType="centerInside"/>
+
+        <ImageButton
+                android:id="@+id/im_anglais"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/taille_drap"
+                android:layout_column="2"
+                android:layout_gravity="center_horizontal"
+                android:layout_span="1"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:background="#00ffffff"
+                android:clickable="true"
+                android:contentDescription="@string/Anglais"
+                android:cropToPadding="false"
+                android:onClick="clickDrapeauAnglais"
+                android:src="@drawable/anglais" android:scaleType="centerInside"/>
+
+        <ImageButton
+                android:id="@+id/im_espagnol"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/taille_drap"
+                android:layout_column="3"
+                android:layout_gravity="center_horizontal"
+                android:layout_span="1"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:background="#00ffffff"
+                android:clickable="true"
+                android:contentDescription="@string/Espagnol"
+                android:onClick="clickDrapeauEspagnol"
+                android:src="@drawable/espagnol" android:scaleType="centerInside"/>
+
+        <ImageButton
+                android:id="@+id/im_portugais"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/taille_drap"
+                android:layout_column="3"
+                android:layout_gravity="center_horizontal"
+                android:layout_span="1"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:background="#00ffffff"
+                android:clickable="true"
+                android:contentDescription="@string/Portugais"
+                android:onClick="clickDrapeauPortugais"
+                android:src="@drawable/portugais" android:scaleType="centerInside"/>
+
+        <ImageButton
+                android:id="@+id/im_occitan"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/taille_drap"
+                android:layout_column="3"
+                android:layout_gravity="left"
+                android:layout_span="1"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:background="#00ffffff"
+                android:clickable="true"
+                android:contentDescription="@string/Occitan"
+                android:onClick="clickDrapeauOccitan"
+                android:src="@drawable/occitan" android:scaleType="centerInside"/>
+
+        <ImageButton
+                android:id="@+id/im_lingvo"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/taille_drap"
+                android:layout_column="3"
+                android:layout_gravity="left"
+                android:layout_span="1"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:background="#00ffffff"
+                android:clickable="true"
+                android:contentDescription="@string/Lingvo"
+                android:onClick="clickDrapeauLingvo"
+                android:src="@drawable/lingvo" android:scaleType="centerInside"/>
+
+        <ImageButton
+                android:id="@+id/im_allemand"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/taille_drap"
+                android:layout_column="3"
+                android:layout_gravity="left"
+                android:layout_span="1"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:background="#00ffffff"
+                android:clickable="true"
+                android:contentDescription="@string/Allemand"
+                android:onClick="clickDrapeauAllemand"
+                android:src="@drawable/allemand" android:scaleType="centerInside"/>
+
+        <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:tools="http://schemas.android.com/tools"
+                  android:orientation="vertical"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:divider="@drawable/divider"
+                  android:focusable="false"
+                  android:showDividers="middle|end"
+                  android:dividerPadding="20dp">
+
+        <Button
+                style="@android:style/Widget.DeviceDefault.Button.Borderless"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/themes"
+                android:id="@+id/b_themes"
+                android:gravity="center_vertical|left"
+                android:paddingStart="@dimen/taille_drap"
+                android:onClick="clickThemes"
+                android:textColor="#fe000000" />
+
+        <Button
+                style="@android:style/Widget.DeviceDefault.Button.Borderless"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/mots"
+                android:id="@+id/b_mots"
+                android:gravity="center_vertical|left"
+                android:paddingStart="@dimen/taille_drap"
+                android:onClick="clickMots"
+                android:textColor="#fe000000" />
+
+        <Button
+                style="@android:style/Widget.DeviceDefault.Button.Borderless"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/verbes"
+                android:id="@+id/b_verbes"
+                android:gravity="center_vertical|left"
+                android:paddingStart="@dimen/taille_drap"
+                android:onClick="clickVerbes"
+                android:textColor="#fe000000" />
+        <Button
+                style="@android:style/Widget.DeviceDefault.Button.Borderless"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/formes_types"
+                android:id="@+id/b_formes_types"
+                android:gravity="center_vertical|left"
+                android:paddingStart="@dimen/taille_drap"
+                android:onClick="clickFormesTypes"
+                android:textColor="#fe000000" />
+
+        <Button
+                style="@android:style/Widget.DeviceDefault.Button.Borderless"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/formes"
+                android:id="@+id/b_formes"
+                android:gravity="center_vertical|left"
+                android:paddingStart="@dimen/taille_drap"
+                android:onClick="clickFormes"
+                android:textColor="#fe000000" />
+
+        <Button
+                style="@android:style/Widget.DeviceDefault.Button.Borderless"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/revision"
+                android:id="@+id/b_revision"
+                android:gravity="center_vertical|left"
+                android:paddingStart="@dimen/taille_drap"
+                android:onClick="clickRevision"
+                android:textColor="#fe000000"
+                android:visibility="visible" />
+
+        <Button
+                style="@android:style/Widget.DeviceDefault.Button.Borderless"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/statistiques"
+                android:id="@+id/b_statistiques"
+                android:singleLine="true"
+                android:gravity="center_vertical|left"
+                android:paddingStart="@dimen/taille_drap"
+                android:onClick="clickStatistiques"
+                android:textColor="#fe000000"/>
+
+        <Button
+                style="@android:style/Widget.DeviceDefault.Button.Borderless"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/parametrage"
+                android:id="@+id/b_parametrage"
+                android:singleLine="true"
+                android:gravity="center_vertical|left"
+                android:paddingStart="@dimen/taille_drap"
+                android:onClick="clickParametrage"
+                android:textColor="#fe000000"/>
+
+        <Button
+                style="@android:style/Widget.DeviceDefault.Button.Borderless"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/quitter"
+                android:id="@+id/b_quitter"
+                android:singleLine="true"
+                android:gravity="center_vertical|left"
+                android:paddingStart="@dimen/taille_drap"
+                android:onClick="clickQuitter"
+                android:textColor="#fe000000"/>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,31 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context="com.jmarzin.jmlangues.ThemesActivity"
+    android:orientation="horizontal"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp">
+    <TextView
+            android:id="@id/text1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall"
+            android:gravity="center_vertical|end"
+            android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+            android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+            android:minHeight="?android:attr/listPreferredItemHeightSmall"
+            android:layout_weight="6"
+            android:paddingLeft="0sp"
+            android:paddingRight="0sp"
+            android:textSize="20sp" android:textAlignment="viewEnd"/>
+    <TextView
+            android:id="@id/text2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall"
+            android:gravity="start|center_vertical"
+            android:minHeight="?android:attr/listPreferredItemHeightSmall"
+            android:layout_weight="1"
+            android:layout_gravity=""
+            android:textSize="20sp"/>
+</LinearLayout>
