@@ -23,7 +23,7 @@ class FormesTypesActivity : AppCompatActivity() {
         val dbManager = MyDbHelper(baseContext)
         db = dbManager.writableDatabase
         val selection = SessionContract.SessionTable.COLUMN_NAME_DERNIERE + " = 1"
-        session = Session.find_by(db, selection)
+        session = Session.findBy(db, selection)
 
         setSupportActionBar(findViewById(R.id.my_toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -52,14 +52,14 @@ class FormesTypesActivity : AppCompatActivity() {
 
         listView.onItemClickListener = AdapterView.OnItemClickListener { _, _, pos, _ ->
             mCursor.moveToPosition(pos)
-            session!!.formeTypeNumero = mCursor.getInt(mCursor.getColumnIndexOrThrow(FormeTypeContract.FormeTypeTable.COLUMN_NAME_ID))
+            session!!.formeTypeNumero = mCursor.getInt(mCursor.getColumnIndexOrThrow(FormeTypeContract.FormeTypeTable.COLUMN_NAME_NUMERO))
             startActivity(Intent(baseContext, FormesActivity::class.java))
         }
     }
 
     override fun onResume() {
         super.onResume()
-        session = Session.find_by(db, SessionContract.SessionTable.COLUMN_NAME_DERNIERE + " = 1")
+        session = Session.findBy(db, SessionContract.SessionTable.COLUMN_NAME_DERNIERE + " = 1")
     }
 
     override fun onPause() {

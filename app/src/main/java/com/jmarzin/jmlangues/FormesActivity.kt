@@ -27,7 +27,7 @@ class FormesActivity : AppCompatActivity() {
         val dbManager = MyDbHelper(baseContext)
         db = dbManager.writableDatabase
         val selection = SessionContract.SessionTable.COLUMN_NAME_DERNIERE + " = 1"
-        session = Session.find_by(db, selection)
+        session = Session.findBy(db, selection)
 
         setSupportActionBar(findViewById(R.id.my_toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -92,7 +92,7 @@ class FormesActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         val selection = SessionContract.SessionTable.COLUMN_NAME_DERNIERE + " = 1"
-        session = Session.find_by(db, selection)
+        session = Session.findBy(db, selection)
     }
 
     override fun onPause() {

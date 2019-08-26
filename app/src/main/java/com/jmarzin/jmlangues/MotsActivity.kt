@@ -13,15 +13,7 @@ import android.view.MenuItem
 import android.widget.AdapterView
 import android.widget.ListView
 import android.widget.SimpleCursorAdapter
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import android.support.v4.widget.SearchViewCompat.setOnQueryTextListener
-import android.support.v4.app.SupportActivity
-import android.support.v4.app.SupportActivity.ExtraData
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-
-
-
-
+import java.util.*
 
 
 class MotsActivity : AppCompatActivity() {
@@ -34,8 +26,7 @@ class MotsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_verbes)
         val dbManager = MyDbHelper(baseContext)
         db = dbManager.writableDatabase
-        val selection = SessionContract.SessionTable.COLUMN_NAME_DERNIERE + " = 1"
-        session = Session.find_by(db, selection)
+        session = Session.findBy(db, SessionContract.SessionTable.COLUMN_NAME_DERNIERE + " = 1")
 
         setSupportActionBar(findViewById(R.id.my_toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -50,7 +41,6 @@ class MotsActivity : AppCompatActivity() {
 
     private fun handleIntent(intent: Intent) {
         var mCursor: Cursor? = null
-        // Verify the action and get the query
         if (Intent.ACTION_SEARCH == intent.action) {
             this.title = "  Mots trouvés"
             intent.getStringExtra(SearchManager.QUERY)?.also { query ->
@@ -58,7 +48,7 @@ class MotsActivity : AppCompatActivity() {
                     MotContract.MotTable.COLUMN_NAME_LANGUE_ID + " = \"" + session!!.langue!!.substring(
                         0,
                         2
-                    ).toLowerCase() + "\"" +
+                    ).toLowerCase(Locale.FRANCE) + "\"" +
                             " AND (" + MotContract.MotTable.COLUMN_NAME_FRANCAIS + " LIKE \"" + query + "\"" +
                             " OR " + MotContract.MotTable.COLUMN_NAME_LANGUE + " LIKE \"" + query + "\"" +
                             " OR " + MotContract.MotTable.COLUMN_NAME_MOT_DIRECTEUR + " LIKE \"" + query + "\")"
@@ -66,22 +56,19 @@ class MotsActivity : AppCompatActivity() {
             }
         } else {
             this.title = "  Mots"
-            if (session!!.themeId > 0) {
-                val arguments = arrayOf("" + session!!.themeId)
-                mCursor = Mot.where(
+            mCursor = if (session!!.themeId > 0) {
+                Mot.where(
                     db!!,
                     MotContract.MotTable.COLUMN_NAME_THEME_ID + " = " + session!!.themeId + " and " +
                             MotContract.MotTable.COLUMN_NAME_LANGUE_ID + " = \"" + session!!.langue!!.substring(
                         0,
                         2
-                    ).toLowerCase() + "\""
+                    ).toLowerCase(Locale.FRANCE) + "\""
                 )
             } else {
-                mCursor = Mot.where(db!!, Utilitaires.getSelection(session!!, "Mots"))
+                Mot.where(db!!, Utilitaires.getSelection(session!!, "Mots"))
             }
         }
-
-        //val mCursor = Mot.where(db!!, "langue_id = \"" + session!!.langue!!.substring(0, 2).toLowerCase() + "\"")
 
         val adapter = SimpleCursorAdapter(
             this,
@@ -94,19 +81,17 @@ class MotsActivity : AppCompatActivity() {
         val listView = findViewById<ListView>(R.id.listView)
         listView.adapter = adapter
 
-        listView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, pos, id ->
+        listView.onItemClickListener = AdapterView.OnItemClickListener {_ , _, pos, _ ->
             mCursor!!.moveToPosition(pos)
-            val rowId = mCursor!!.getInt(mCursor!!.getColumnIndexOrThrow("_id"))
-            session!!.motId = rowId
-            val intent = Intent(baseContext, MotActivity::class.java)
-            startActivity(intent)
+            session!!.motId = mCursor!!.getInt(mCursor!!.getColumnIndexOrThrow(MotContract.MotTable.COLUMN_NAME_ID))
+            startActivity(Intent(baseContext, MotActivity::class.java))
         }
     }
 
     override fun onResume() {
         super.onResume()
         val selection = SessionContract.SessionTable.COLUMN_NAME_DERNIERE + " = 1"
-        session = Session.find_by(db, selection)
+        session = Session.findBy(db, selection)
     }
 
     override fun onPause() {
@@ -129,7 +114,6 @@ class MotsActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         Utilitaires.traiteMenu(item, this, session!!)
-        return true
-        //return super.onOptionsItemSelected(item)
+        return super.onOptionsItemSelected(item)
     }
 }

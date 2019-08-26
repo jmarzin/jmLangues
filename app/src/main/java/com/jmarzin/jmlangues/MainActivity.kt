@@ -1,16 +1,14 @@
 package com.jmarzin.jmlangues
 
-import android.app.Activity
-import android.app.SearchManager
-import android.content.*
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.database.sqlite.SQLiteDatabase
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.SearchView
 import android.view.Gravity
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
@@ -38,12 +36,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        val selection = SessionContract.SessionTable.COLUMN_NAME_DERNIERE + " = 1"
-        session = Session.find_by(db, selection)
-        if (session._id < 1) {
+        session = Session.findBy(db, SessionContract.SessionTable.COLUMN_NAME_DERNIERE + " = 1")
+        if (session.id < 1) {
             session.langue = getString(R.string.titre_langue)
         }
-        val mTexteLangue = findViewById(R.id.t_langue) as TextView
+        val mTexteLangue = findViewById<TextView>(R.id.t_langue)
         mTexteLangue.text = session.langue
         session.razCursor()
     }
@@ -58,24 +55,24 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
-    fun afficheMessage(texte: String) {
-        val text = texte
+    private fun afficheMessage(texte: String) {
         val duration = Toast.LENGTH_LONG
-        val message = Toast.makeText(applicationContext, text, duration)
+        val message = Toast.makeText(applicationContext, texte, duration)
         message.setGravity(Gravity.TOP, 0, 0)
         message.show()
     }
 
-    fun changeLangue(langue: String) {
-        val mTexteLangue = findViewById(com.jmarzin.jmlangues.R.id.t_langue) as TextView
+    private fun changeLangue(langue: String) {
+        val mTexteLangue = findViewById<TextView>(R.id.t_langue)
         if (mTexteLangue.text == langue) {
             return
         } else {
             session.derniereSession = 0
             session.save(db)
-            val selection = SessionContract.SessionTable.COLUMN_NAME_LANGUE + " = \"" + langue + "\""
-            session = Session.find_by(db, selection)
-            if (session._id == 0) {
+            val selection =
+                SessionContract.SessionTable.COLUMN_NAME_LANGUE + " = \"" + langue + "\""
+            session = Session.findBy(db, selection)
+            if (session.id == 0) {
                 session = Session()
                 session.langue = langue
             }
@@ -85,53 +82,36 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun clickDrapeauItalien(view: View) {
-        changeLangue(getString(com.jmarzin.jmlangues.R.string.Italien))
-    }
+    fun clickDrapeauItalien(view: View) = changeLangue(getString(R.string.Italien))
 
-    fun clickDrapeauAnglais(view: View) {
-        changeLangue(getString(com.jmarzin.jmlangues.R.string.Anglais))
-    }
+    fun clickDrapeauAnglais(view: View) = changeLangue(getString(R.string.Anglais))
 
-    fun clickDrapeauEspagnol(view: View) {
-        changeLangue(getString(com.jmarzin.jmlangues.R.string.Espagnol))
-    }
+    fun clickDrapeauEspagnol(view: View) = changeLangue(getString(R.string.Espagnol))
 
-    fun clickDrapeauPortugais(view: View) {
-        changeLangue(getString(com.jmarzin.jmlangues.R.string.Portugais))
-    }
+    fun clickDrapeauPortugais(view: View) = changeLangue(getString(R.string.Portugais))
 
-    fun clickDrapeauOccitan(view: View) {
-        changeLangue("Occitan")
-    }
+    fun clickDrapeauOccitan(view: View) = changeLangue(getString(R.string.Occitan))
 
-    fun clickDrapeauLingvo(view: View) {
-        changeLangue(getString(com.jmarzin.jmlangues.R.string.Lingvo))
-    }
+    fun clickDrapeauLingvo(view: View) = changeLangue(getString(R.string.Lingvo))
 
-    fun clickDrapeauAllemand(view: View) {
-        changeLangue(getString(com.jmarzin.jmlangues.R.string.Allemand))
-    }
+    fun clickDrapeauAllemand(view: View) = changeLangue(getString(R.string.Allemand))
 
-    private fun Oklangue(): Boolean {
-        //val mTexteLangue = findViewById(R.id.t_langue) as TextView
-
-        val contenu = getString(R.string.titre_langue)
-        if (this.title == contenu) {
+    private fun okLangue(): Boolean {
+        return if (this.title == getString(R.string.titre_langue)) {
             afficheMessage(getString(R.string.erreurChoixLangue))
-            return false
+            false
         } else {
-            return true
+            true
         }
     }
 
-    fun lanceActivite(intent: Intent?) {
+    private fun lanceActivite(intent: Intent?) {
         if (!dejaMaj) {
             dejaMaj = true
-            val connMgr = baseContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            val networkInfo = connMgr.getActiveNetworkInfo()
-            val duration = Toast.LENGTH_LONG
-            if (networkInfo != null && networkInfo!!.isConnected()) {
+            val connMgr =
+                baseContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val networkInfo = connMgr.activeNetworkInfo
+            if (networkInfo != null && networkInfo.isConnected) {
                 val intentService = Intent(baseContext, MiseAJour::class.java)
                 intentService.putExtra("langue", session.langue)
                 startService(intentService)
@@ -140,70 +120,56 @@ class MainActivity : AppCompatActivity() {
             }
         }
         intent?.let {
-            startActivity(intent)}
+            startActivity(intent)
+        }
     }
 
     fun clickThemes(view: View) {
-        if (Oklangue()) {
-            val intent = Intent(this, ThemesActivity::class.java)
-            session.themeId = 0
-            session.motId = 0
-            lanceActivite(intent)
+        if (okLangue()) {
+            lanceActivite(Intent(this, ThemesActivity::class.java))
         }
     }
 
     fun clickMots(view: View) {
-        if (Oklangue()) {
-            val intent = Intent(this, MotsActivity::class.java)
-            session.themeId = 0
-            session.motId = 0
-            lanceActivite(intent)
+        if (okLangue()) {
+            lanceActivite(Intent(this, MotsActivity::class.java))
         }
     }
 
     fun clickVerbes(view: View) {
-        if (Oklangue()) {
-            val intent = Intent(this, VerbesActivity::class.java)
-            session.verbeId = 0
-            session.formeId = 0
-            lanceActivite(intent)
+        if (okLangue()) {
+            lanceActivite(Intent(this, VerbesActivity::class.java))
         }
     }
 
     fun clickFormesTypes(view: View) {
-        if (Oklangue()) {
-            val intent = Intent(this, FormesTypesActivity::class.java)
-            session.verbeId = 0
-            session.formeId = 0
-            lanceActivite(intent)
+        if (okLangue()) {
+            lanceActivite(Intent(this, FormesTypesActivity::class.java))
         }
     }
 
     fun clickFormes(view: View) {
-        if (Oklangue()) {
-            val intent = Intent(this, FormesActivity::class.java)
-            session.verbeId = 0
-            session.formeId = 0
-            lanceActivite(intent)
+        if (okLangue()) {
+            lanceActivite(Intent(this, FormesActivity::class.java))
         }
     }
 
     fun clickRevision(view: View) {
-        if (Oklangue()) {
+        if (okLangue()) {
             val intent = null // Intent(this, RevisionActivity::class.java)
             lanceActivite(intent)
         }
     }
 
     fun clickStatistiques(view: View) {
-        if (Oklangue()) {
+        if (okLangue()) {
             val intent = null // Intent(this, StatsActivity::class.java)
             lanceActivite(intent)
         }
     }
 
     fun clickParametrage(view: View) {
-        if (Oklangue()) {
+        if (okLangue()) {
             val intent = null // Intent(this, ParametrageActivity::class.java)
             lanceActivite(intent)
         }

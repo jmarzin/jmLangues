@@ -14,54 +14,57 @@ import java.util.*
 object Utilitaires {
 
     fun traiteMenu(item: MenuItem, activity: Activity, session: Session): Boolean {
-        var intent: Intent
         fun start(intent: Intent) {
             activity.startActivity(intent)
             activity.finish()
         }
+
+        fun razStart(intent: Intent) {
+            session.razCursor()
+            start(intent)
+        }
         when (item.itemId) {
             android.R.id.home -> {
-                if (session.themeId != 0 && session.motId == 0) {
-                    intent = Intent(activity, ThemesActivity::class.java)
-                    start(intent)
-                } else if (session.formeTypeNumero != 0 && session.formeId == 0) {
-                    intent = Intent(activity, FormesTypesActivity::class.java)
-                    start(intent)
-                } else if (session.verbeId != 0 && session.formeId == 0) {
-                    intent = Intent(activity, VerbesActivity::class.java)
-                    start(intent)
-
-                } else {
-                    session.motId = 0
-                    session.formeId = 0
-                    NavUtils.navigateUpFromSameTask(activity)
-                    //                finish();
+                when {
+                    session.themeId != 0 && session.motId == 0 -> start(
+                        Intent(
+                            activity,
+                            ThemesActivity::class.java
+                        )
+                    )
+                    session.formeTypeNumero != 0 && session.formeId == 0 -> start(
+                        Intent(
+                            activity,
+                            FormesTypesActivity::class.java
+                        )
+                    )
+                    session.verbeId != 0 && session.formeId == 0 -> start(
+                        Intent(
+                            activity,
+                            VerbesActivity::class.java
+                        )
+                    )
+                    else -> {
+                        session.motId = 0
+                        session.formeId = 0
+                        NavUtils.navigateUpFromSameTask(activity)
+                    }
                 }
             }
             R.id.action_themes -> {
-                intent = Intent(activity, ThemesActivity::class.java)
-                session.razCursor()
-                start(intent)
+                razStart(Intent(activity, ThemesActivity::class.java))
             }
             R.id.action_mots -> {
-                session.razCursor()
-                intent = Intent(activity, MotsActivity::class.java)
-                start(intent)
+                razStart(Intent(activity, MotsActivity::class.java))
             }
             R.id.action_verbes -> {
-                session.razCursor()
-                intent = Intent(activity, VerbesActivity::class.java)
-                start(intent)
+                razStart(Intent(activity, VerbesActivity::class.java))
             }
             R.id.action_formes_types -> {
-                session.razCursor()
-                intent = Intent(activity, FormesTypesActivity::class.java)
-                start(intent)
+                razStart(Intent(activity, FormesTypesActivity::class.java))
             }
             R.id.action_formes -> {
-                session.razCursor()
-                intent = Intent(activity, FormesActivity::class.java)
-                start(intent)
+                razStart(Intent(activity, FormesActivity::class.java))
             }
             R.id.action_revision -> {
 //                intent = Intent(this, RevisionActivity::class.java)
@@ -93,29 +96,25 @@ object Utilitaires {
             else -> R.drawable.lingvo
         }
     }
-//
+
+    //
     fun setLocale(langue: String): Locale? {
-        return if (langue == "Italien") {
-            Locale.ITALIAN
-        } else if (langue == "Anglais") {
-            Locale.ENGLISH
-        } else if (langue == "Espagnol") {
-            Locale("es", "ES")
-        } else if (langue == "Occitan") {
-            null
-        } else if (langue == "Portugais") {
-            Locale("pt", "PT")
-        } else if (langue == "Allemand") {
-            Locale("de", "DE")
-        } else {
-            null
+        return when (langue) {
+            "Italien" -> Locale.ITALIAN
+            "Anglais" -> Locale.ENGLISH
+            "Espagnol" -> Locale("es", "ES")
+            "Occitan" -> null
+            "Portugais" -> Locale("pt", "PT")
+            "Allemand" -> Locale.GERMANY
+            else -> null
         }
     }
-//
+
+    //
     fun getSelection(session: Session, objets: String): String {
         val date = Timestamp(System.currentTimeMillis())
         date.time = date.time - session.ageRev * 24 * 3600000
-        val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.FRANCE)
         val dateRev = sdf.format(date)
         val cond1: String
         var cond2 = ""
@@ -124,23 +123,22 @@ object Utilitaires {
         var cond5 = ""
         var cond6 = ""
         if (objets === "Mots") {
-            cond1 = MotContract.MotTable.COLUMN_NAME_LANGUE_ID + " = \"" + session.langue!!.substring(
-                0,
-                2
-            ).toLowerCase() + "\""
-            cond6 = " AND " + MotContract.MotTable.COLUMN_NAME_LANGUE_NIVEAU + " <= \"" + session.nivMax + "\""
-            if (session.ageRev !== 0) {
-                cond2 = " AND " + MotContract.MotTable.COLUMN_NAME_DATE_REV + " <= \"" + dateRev + "\""
-            }
-            if (session.poidsMin > 1) {
-                cond3 = " AND " + MotContract.MotTable.COLUMN_NAME_POIDS + " >= " + session.poidsMin
-            }
-            if (session.errMin > 0) {
-                cond4 = " AND " + MotContract.MotTable.COLUMN_NAME_NB_ERR + " >= " + session.errMin
-            }
-            if (session.listeThemes.size > 0) {
+            cond1 =
+                MotContract.MotTable.COLUMN_NAME_LANGUE_ID + " = \"" + session.langue!!.substring(
+                    0,
+                    2
+                ).toLowerCase(Locale.FRANCE) + "\""
+            cond6 =
+                " AND " + MotContract.MotTable.COLUMN_NAME_LANGUE_NIVEAU + " <= \"" + session.nivMax + "\""
+            if (session.ageRev != 0) cond2 =
+                " AND " + MotContract.MotTable.COLUMN_NAME_DATE_REV + " <= \"" + dateRev + "\""
+            if (session.poidsMin > 1) cond3 =
+                " AND " + MotContract.MotTable.COLUMN_NAME_POIDS + " >= " + session.poidsMin
+            if (session.errMin > 0) cond4 =
+                " AND " + MotContract.MotTable.COLUMN_NAME_NB_ERR + " >= " + session.errMin
+            if (session.listeThemes.isNotEmpty()) {
                 cond5 = " AND " + MotContract.MotTable.COLUMN_NAME_THEME_ID + " IN ("
-                for (i in 0 until session.listeThemes.size) {
+                for (i in session.listeThemes.indices) {
                     if (i != 0) {
                         cond5 += ","
                     }
@@ -149,20 +147,19 @@ object Utilitaires {
                 cond5 += ")"
             }
         } else {
-            cond1 = FormeContract.FormeTable.COLUMN_NAME_LANGUE_ID + " = \"" + session.langue!!.substring(
-                0, 2).toLowerCase() + "\""
-            if (session.ageRev !== 0) {
-                cond2 = " AND " + FormeContract.FormeTable.COLUMN_NAME_DATE_REV + " <= \"" + dateRev + "\""
-            }
-            if (session.poidsMin > 1) {
-                cond3 = " AND " + FormeContract.FormeTable.COLUMN_NAME_POIDS + " >= " + session.poidsMin
-            }
-            if (session.errMin > 0) {
-                cond4 = " AND " + FormeContract.FormeTable.COLUMN_NAME_NB_ERR + " >= " + session.errMin
-            }
-            if (session.listeVerbes.size > 0) {
+            cond1 =
+                FormeContract.FormeTable.COLUMN_NAME_LANGUE_ID + " = \"" + session.langue!!.substring(
+                    0, 2
+                ).toLowerCase(Locale.FRANCE) + "\""
+            if (session.ageRev != 0) cond2 =
+                " AND " + FormeContract.FormeTable.COLUMN_NAME_DATE_REV + " <= \"" + dateRev + "\""
+            if (session.poidsMin > 1) cond3 =
+                " AND " + FormeContract.FormeTable.COLUMN_NAME_POIDS + " >= " + session.poidsMin
+            if (session.errMin > 0) cond4 =
+                " AND " + FormeContract.FormeTable.COLUMN_NAME_NB_ERR + " >= " + session.errMin
+            if (session.listeVerbes.isNotEmpty()) {
                 cond5 = " AND " + FormeContract.FormeTable.COLUMN_NAME_VERBE_ID + " IN ("
-                for (i in 0 until session.listeVerbes.size) {
+                for (i in session.listeVerbes.indices) {
                     if (i != 0) {
                         cond5 += ","
                     }

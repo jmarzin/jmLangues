@@ -2,17 +2,21 @@ package com.jmarzin.jmlangues
 
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
+import android.speech.tts.TextToSpeech
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import com.jmarzin.jmlangues.R.string.en
+import java.util.*
 
 
 class FormeActivity : AppCompatActivity() {
 
     private var db: SQLiteDatabase? = null
     private var session: Session? = null
+    private var ttobj: TextToSpeech? = null
+    private var locale: Locale? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,11 +24,13 @@ class FormeActivity : AppCompatActivity() {
         val dbManager = MyDbHelper(baseContext)
         db = dbManager.writableDatabase
         val selection = SessionContract.SessionTable.COLUMN_NAME_DERNIERE + " = 1"
-        session = Session.find_by(db, selection)
+        session = Session.findBy(db, selection)
 
         setSupportActionBar(findViewById(R.id.my_toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setIcon(Utilitaires.drapeau(session!!.langue))
+
+        locale = Utilitaires.setLocale(session!!.langue!!)
 
         this.title = "  Forme verbale"
         val forme = Forme.find(db!!, session!!.formeId)
@@ -70,12 +76,24 @@ class FormeActivity : AppCompatActivity() {
 
             val tDateMaj = findViewById<TextView>(R.id.t_date_maj)
             tDateMaj.text = forme.dateMaj
+
+            ttobj = TextToSpeech(
+                applicationContext,
+                TextToSpeech.OnInitListener { status ->
+                    if (status != TextToSpeech.ERROR) {
+                        if (locale != null) {
+                            ttobj!!.language = locale
+                            ttobj!!.speak(forme.langue, TextToSpeech.QUEUE_ADD, null, forme.langue)
+                        }
+                    }
+                }
+            )
         }
     }
 
     override fun onResume() {
         super.onResume()
-        session = Session.find_by(db, SessionContract.SessionTable.COLUMN_NAME_DERNIERE + " = 1")
+        session = Session.findBy(db, SessionContract.SessionTable.COLUMN_NAME_DERNIERE + " = 1")
     }
 
     override fun onPause() {

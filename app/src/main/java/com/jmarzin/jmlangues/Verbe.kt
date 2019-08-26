@@ -20,7 +20,7 @@ class Verbe : TermeBase() {
 
         if (this.id > 0) {
             val selection = VerbeContract.VerbeTable.COLUMN_NAME_ID + " = " + id
-            val count = db.update(VerbeContract.VerbeTable.TABLE_NAME, values, selection, null)
+            db.update(VerbeContract.VerbeTable.TABLE_NAME, values, selection, null)
         } else {
             this.id = db.insert(VerbeContract.VerbeTable.TABLE_NAME, null, values).toInt()
         }
@@ -28,11 +28,20 @@ class Verbe : TermeBase() {
 
     companion object {
 
-        fun find_by(db: SQLiteDatabase, selection: String): Verbe? {
-            val mCursor = db.query(VerbeContract.VerbeTable.TABLE_NAME, null, selection, null, null, null, null)
+        private fun findBy(db: SQLiteDatabase, selection: String): Verbe? {
+            val mCursor = db.query(
+                VerbeContract.VerbeTable.TABLE_NAME,
+                null,
+                selection,
+                null,
+                null,
+                null,
+                null
+            )
             var verbe: Verbe? = Verbe()
             if (mCursor.moveToFirst()) {
-                verbe!!.id = mCursor.getInt(mCursor.getColumnIndexOrThrow(VerbeContract.VerbeTable.COLUMN_NAME_ID))
+                verbe!!.id =
+                    mCursor.getInt(mCursor.getColumnIndexOrThrow(VerbeContract.VerbeTable.COLUMN_NAME_ID))
                 verbe.langueId =
                     mCursor.getString(mCursor.getColumnIndexOrThrow(VerbeContract.VerbeTable.COLUMN_NAME_LANGUE_ID))
                 verbe.langue =
@@ -50,29 +59,45 @@ class Verbe : TermeBase() {
 
         fun find(db: SQLiteDatabase, id: Int): Verbe? {
             val selection = VerbeContract.VerbeTable.COLUMN_NAME_ID + " = " + id
-            return Verbe.find_by(db, selection)
+            return findBy(db, selection)
         }
 
-        fun find_max_date_update(db: SQLiteDatabase, langue: String): String {
+        fun findMaxDateUpdate(db: SQLiteDatabase, langue: String): String {
             val cursor =
-                db.query(VerbeContract.VerbeTable.TABLE_NAME,
-                    arrayOf<String>("MAX(${VerbeContract.VerbeTable.COLUMN_NAME_DATE_MAJ}) AS MAX"),
+                db.query(
+                    VerbeContract.VerbeTable.TABLE_NAME,
+                    arrayOf("MAX(${VerbeContract.VerbeTable.COLUMN_NAME_DATE_MAJ}) AS MAX"),
                     VerbeContract.VerbeTable.COLUMN_NAME_LANGUE_ID + " = ?",
-                    arrayOf<String>(langue),null, null, null, null)
+                    arrayOf(langue), null, null, null, null
+                )
             cursor.moveToFirst()
             val index = cursor.getColumnIndex("MAX")
             val data = cursor.getString(index)
-            return if (data != null) data else ""
+            cursor.close()
+            return data ?: ""
         }
 
         fun where(db: SQLiteDatabase, selection: String): Cursor {
             val mCursor: Cursor
             val sortOrder = VerbeContract.VerbeTable.COLUMN_NAME_LANGUE + " ASC"
-            mCursor = db.query(VerbeContract.VerbeTable.TABLE_NAME, null, selection, null, null, null, sortOrder)
+            mCursor = db.query(
+                VerbeContract.VerbeTable.TABLE_NAME,
+                null,
+                selection,
+                null,
+                null,
+                null,
+                sortOrder
+            )
             return mCursor
         }
 
-        fun maj_base(table: JSONArray, db: SQLiteDatabase, langue: String, date_maj: String): Triple<Int, Int, Int> {
+        fun majBase(
+            table: JSONArray,
+            db: SQLiteDatabase,
+            langue: String,
+            date_maj: String
+        ): Triple<Int, Int, Int> {
             var nbPlus = 0
             var nbMoins = 0
             var nbModif = 0
@@ -84,13 +109,14 @@ class Verbe : TermeBase() {
                     db.execSQL(
                         "DELETE FROM " + VerbeContract.VerbeTable.TABLE_NAME +
                                 " WHERE " + VerbeContract.VerbeTable.COLUMN_NAME_LANGUE_ID + " = \"" + langue + "\" AND " +
-                                VerbeContract.VerbeTable.COLUMN_NAME_DIST_ID + " = " + distId )
+                                VerbeContract.VerbeTable.COLUMN_NAME_DIST_ID + " = " + distId
+                    )
                     nbMoins++
                 } else {
                     val selection =
                         VerbeContract.VerbeTable.COLUMN_NAME_LANGUE_ID + " = \"" + langue + "\"" +
                                 " AND " + VerbeContract.VerbeTable.COLUMN_NAME_DIST_ID + " = " + distId
-                    var verbe = Verbe.find_by(db, selection)
+                    var verbe = findBy(db, selection)
                     if (verbe == null) {
                         verbe = Verbe()
                         verbe.distId = distId

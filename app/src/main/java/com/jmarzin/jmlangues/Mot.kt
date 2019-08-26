@@ -10,10 +10,9 @@ import org.json.JSONArray
  */
 class Mot : ItemQuestionnable() {
 
-    //    public String theme_langue;
     var francais: String = ""
-    var mot_directeur: String = ""
-    var langue_niveau: String = ""
+    var motDirecteur: String = ""
+    var langueNiveau: String = ""
     var pronunciation: String = ""
     var theme: Theme = Theme()
 
@@ -28,14 +27,14 @@ class Mot : ItemQuestionnable() {
         values.put(MotContract.MotTable.COLUMN_NAME_FRANCAIS, francais)
         values.put(MotContract.MotTable.COLUMN_NAME_LANGUE, langue)
         values.put(MotContract.MotTable.COLUMN_NAME_LANGUE_ID, langueId)
-        values.put(MotContract.MotTable.COLUMN_NAME_MOT_DIRECTEUR, mot_directeur)
-        values.put(MotContract.MotTable.COLUMN_NAME_LANGUE_NIVEAU, langue_niveau)
+        values.put(MotContract.MotTable.COLUMN_NAME_MOT_DIRECTEUR, motDirecteur)
+        values.put(MotContract.MotTable.COLUMN_NAME_LANGUE_NIVEAU, langueNiveau)
         values.put(MotContract.MotTable.COLUMN_NAME_PRONUNCIATION, pronunciation)
         values.put(MotContract.MotTable.COLUMN_NAME_THEME_ID, theme.id)
 
         if (this.id > 0) {
             val selection = MotContract.MotTable.COLUMN_NAME_ID + " = " + id
-            val count = db.update(MotContract.MotTable.TABLE_NAME, values, selection, null)
+            db.update(MotContract.MotTable.TABLE_NAME, values, selection, null)
         } else {
             this.id = db.insert(MotContract.MotTable.TABLE_NAME, null, values).toInt()
         }
@@ -43,29 +42,37 @@ class Mot : ItemQuestionnable() {
 
     companion object {
 
-        fun find_by(db: SQLiteDatabase, selection: String): Mot? {
-            val mCursor = db.query(MotContract.MotTable.TABLE_NAME, null, selection, null, null, null, null)
+        private fun findBy(db: SQLiteDatabase, selection: String): Mot? {
+            val mCursor =
+                db.query(MotContract.MotTable.TABLE_NAME, null, selection, null, null, null, null)
             var mot: Mot? = Mot()
             if (mCursor.moveToFirst()) {
-                mot!!.id = mCursor.getInt(mCursor.getColumnIndexOrThrow(MotContract.MotTable.COLUMN_NAME_ID))
+                mot!!.id =
+                    mCursor.getInt(mCursor.getColumnIndexOrThrow(MotContract.MotTable.COLUMN_NAME_ID))
                 mot.langueId =
                     mCursor.getString(mCursor.getColumnIndexOrThrow(MotContract.MotTable.COLUMN_NAME_LANGUE_ID))
-                val theme_id = mCursor.getInt(mCursor.getColumnIndexOrThrow(MotContract.MotTable.COLUMN_NAME_THEME_ID))
-                mot.theme = Theme.find(db, theme_id)!!
+                val themeId =
+                    mCursor.getInt(mCursor.getColumnIndexOrThrow(MotContract.MotTable.COLUMN_NAME_THEME_ID))
+                mot.theme = Theme.find(db, themeId)!!
                 mot.francais =
-                    mCursor.getString(mCursor.getColumnIndexOrThrow(MotContract.MotTable.COLUMN_NAME_FRANCAIS)).trim()
-                mot.langue_niveau =
+                    mCursor.getString(mCursor.getColumnIndexOrThrow(MotContract.MotTable.COLUMN_NAME_FRANCAIS))
+                        .trim()
+                mot.langueNiveau =
                     mCursor.getString(mCursor.getColumnIndexOrThrow(MotContract.MotTable.COLUMN_NAME_LANGUE_NIVEAU))
                 mot.pronunciation =
                     mCursor.getString(mCursor.getColumnIndexOrThrow(MotContract.MotTable.COLUMN_NAME_PRONUNCIATION))
-                mot.mot_directeur =
+                mot.motDirecteur =
                     mCursor.getString(mCursor.getColumnIndexOrThrow(MotContract.MotTable.COLUMN_NAME_MOT_DIRECTEUR))
-                mot.langue = mCursor.getString(mCursor.getColumnIndexOrThrow(MotContract.MotTable.COLUMN_NAME_LANGUE))
+                mot.langue =
+                    mCursor.getString(mCursor.getColumnIndexOrThrow(MotContract.MotTable.COLUMN_NAME_LANGUE))
                 mot.dateRev =
                     mCursor.getString(mCursor.getColumnIndexOrThrow(MotContract.MotTable.COLUMN_NAME_DATE_REV))
-                mot.poids = mCursor.getInt(mCursor.getColumnIndexOrThrow(MotContract.MotTable.COLUMN_NAME_POIDS))
-                mot.nbErr = mCursor.getInt(mCursor.getColumnIndexOrThrow(MotContract.MotTable.COLUMN_NAME_NB_ERR))
-                mot.distId = mCursor.getInt(mCursor.getColumnIndexOrThrow(MotContract.MotTable.COLUMN_NAME_DIST_ID))
+                mot.poids =
+                    mCursor.getInt(mCursor.getColumnIndexOrThrow(MotContract.MotTable.COLUMN_NAME_POIDS))
+                mot.nbErr =
+                    mCursor.getInt(mCursor.getColumnIndexOrThrow(MotContract.MotTable.COLUMN_NAME_NB_ERR))
+                mot.distId =
+                    mCursor.getInt(mCursor.getColumnIndexOrThrow(MotContract.MotTable.COLUMN_NAME_DIST_ID))
                 mot.dateMaj =
                     mCursor.getString(mCursor.getColumnIndexOrThrow(MotContract.MotTable.COLUMN_NAME_DATE_MAJ))
             } else {
@@ -77,15 +84,17 @@ class Mot : ItemQuestionnable() {
 
         fun find(db: SQLiteDatabase, id: Int): Mot? {
             val selection = MotContract.MotTable.COLUMN_NAME_ID + " = " + id
-            return Mot.find_by(db, selection)
+            return findBy(db, selection)
         }
 
         fun findMaxDateUpdate(db: SQLiteDatabase, langue: String): String {
             val cursor =
-                db.query(MotContract.MotTable.TABLE_NAME,
+                db.query(
+                    MotContract.MotTable.TABLE_NAME,
                     arrayOf("MAX(${MotContract.MotTable.COLUMN_NAME_DATE_MAJ}) AS MAX"),
                     MotContract.MotTable.COLUMN_NAME_LANGUE_ID + " = ?",
-                    arrayOf(langue),null, null, null, null)
+                    arrayOf(langue), null, null, null, null
+                )
             cursor.moveToFirst()
             val index = cursor.getColumnIndex("MAX")
             val data = cursor.getString(index)
@@ -95,10 +104,23 @@ class Mot : ItemQuestionnable() {
 
         fun where(db: SQLiteDatabase, selection: String): Cursor {
             val sortOrder = MotContract.MotTable.COLUMN_NAME_MOT_DIRECTEUR + " ASC"
-            return db.query(MotContract.MotTable.TABLE_NAME, null, selection, null, null, null, sortOrder)
+            return db.query(
+                MotContract.MotTable.TABLE_NAME,
+                null,
+                selection,
+                null,
+                null,
+                null,
+                sortOrder
+            )
         }
 
-        fun majBase(table: JSONArray, db: SQLiteDatabase, langue: String, date_maj: String): Triple<Int, Int, Int> {
+        fun majBase(
+            table: JSONArray,
+            db: SQLiteDatabase,
+            langue: String,
+            date_maj: String
+        ): Triple<Int, Int, Int> {
             var nbPlus = 0
             var nbMoins = 0
             var nbModif = 0
@@ -110,13 +132,14 @@ class Mot : ItemQuestionnable() {
                     db.execSQL(
                         "DELETE FROM " + MotContract.MotTable.TABLE_NAME +
                                 " WHERE " + MotContract.MotTable.COLUMN_NAME_LANGUE_ID + " = \"" + langue + "\" AND " +
-                                MotContract.MotTable.COLUMN_NAME_DIST_ID + " = " + distId )
+                                MotContract.MotTable.COLUMN_NAME_DIST_ID + " = " + distId
+                    )
                     nbMoins++
                 } else {
                     val selection =
                         MotContract.MotTable.COLUMN_NAME_LANGUE_ID + " = \"" + langue + "\"" +
                                 " AND " + MotContract.MotTable.COLUMN_NAME_DIST_ID + " = " + distId
-                    var mot = Mot.find_by(db, selection)
+                    var mot = findBy(db, selection)
                     if (mot == null) {
                         mot = Mot()
                         mot.distId = distId
@@ -127,9 +150,9 @@ class Mot : ItemQuestionnable() {
                     }
                     mot.theme.id = motJson.getInt(1)
                     mot.francais = motJson.getString(2).trim()
-                    mot.mot_directeur = motJson.getString(3).trim()
+                    mot.motDirecteur = motJson.getString(3).trim()
                     mot.langue = motJson.getString(4).trim()
-                    mot.langue_niveau = motJson.getString(5)
+                    mot.langueNiveau = motJson.getString(5)
                     mot.pronunciation = motJson.getString(6)
                     mot.dateMaj = date_maj
                     mot.save(db)

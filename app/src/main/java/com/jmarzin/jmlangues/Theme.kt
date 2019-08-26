@@ -11,14 +11,6 @@ import org.json.JSONArray
 class Theme : TermeBase() {
     var numero: Int = 0
 
-//    init {
-//        this.distId = 0
-//        this.langue = ""
-//        this.numero = 0
-//        this.dateMaj = ""
-//        this.langueId = ""
-//    }
-
     fun save(db: SQLiteDatabase) {
         val values = ContentValues()
 
@@ -30,7 +22,7 @@ class Theme : TermeBase() {
 
         if (this.id > 0) {
             val selection = ThemeContract.ThemeTable.COLUMN_NAME_ID + " = " + id
-            val count = db.update(ThemeContract.ThemeTable.TABLE_NAME, values, selection, null)
+            db.update(ThemeContract.ThemeTable.TABLE_NAME, values, selection, null)
         } else {
             this.id = db.insert(ThemeContract.ThemeTable.TABLE_NAME, null, values).toInt()
         }
@@ -38,11 +30,20 @@ class Theme : TermeBase() {
 
     companion object {
 
-        fun find_by(db: SQLiteDatabase, selection: String): Theme? {
-            val mCursor = db.query(ThemeContract.ThemeTable.TABLE_NAME, null, selection, null, null, null, null)
+        fun findBy(db: SQLiteDatabase, selection: String): Theme? {
+            val mCursor = db.query(
+                ThemeContract.ThemeTable.TABLE_NAME,
+                null,
+                selection,
+                null,
+                null,
+                null,
+                null
+            )
             var theme: Theme? = Theme()
             if (mCursor.moveToFirst()) {
-                theme!!.id = mCursor.getInt(mCursor.getColumnIndexOrThrow(ThemeContract.ThemeTable.COLUMN_NAME_ID))
+                theme!!.id =
+                    mCursor.getInt(mCursor.getColumnIndexOrThrow(ThemeContract.ThemeTable.COLUMN_NAME_ID))
                 theme.langueId =
                     mCursor.getString(mCursor.getColumnIndexOrThrow(ThemeContract.ThemeTable.COLUMN_NAME_LANGUE_ID))
                 theme.numero =
@@ -61,30 +62,46 @@ class Theme : TermeBase() {
         }
 
         fun find(db: SQLiteDatabase, id: Int): Theme? {
-            val selection = ThemeContract.ThemeTable.COLUMN_NAME_ID + " = " + id
-            return find_by(db, selection)
+            val selection = ThemeContract.ThemeTable.COLUMN_NAME_DIST_ID + " = " + id
+            return findBy(db, selection)
         }
 
-        fun find_max_date_update(db: SQLiteDatabase, langue: String): String {
+        fun findMaxDateUpdate(db: SQLiteDatabase, langue: String): String {
             val cursor =
-                db.query(ThemeContract.ThemeTable.TABLE_NAME,
-                    arrayOf<String>("MAX(${ThemeContract.ThemeTable.COLUMN_NAME_DATE_MAJ}) AS MAX"),
+                db.query(
+                    ThemeContract.ThemeTable.TABLE_NAME,
+                    arrayOf("MAX(${ThemeContract.ThemeTable.COLUMN_NAME_DATE_MAJ}) AS MAX"),
                     ThemeContract.ThemeTable.COLUMN_NAME_LANGUE_ID + " = ?",
-                    arrayOf<String>(langue),null, null, null, null)
+                    arrayOf(langue), null, null, null, null
+                )
             cursor.moveToFirst()
             val index = cursor.getColumnIndex("MAX")
             val data = cursor.getString(index)
-            return if (data != null) data else ""
+            cursor.close()
+            return data ?: ""
         }
 
         fun where(db: SQLiteDatabase, selection: String): Cursor {
             val mCursor: Cursor
             val sortOrder = ThemeContract.ThemeTable.COLUMN_NAME_NUMERO + " ASC"
-            mCursor = db.query(ThemeContract.ThemeTable.TABLE_NAME, null, selection, null, null, null, sortOrder)
+            mCursor = db.query(
+                ThemeContract.ThemeTable.TABLE_NAME,
+                null,
+                selection,
+                null,
+                null,
+                null,
+                sortOrder
+            )
             return mCursor
         }
 
-        fun maj_base(table: JSONArray, db: SQLiteDatabase, langue: String, date_maj: String): Triple<Int, Int, Int> {
+        fun majBase(
+            table: JSONArray,
+            db: SQLiteDatabase,
+            langue: String,
+            date_maj: String
+        ): Triple<Int, Int, Int> {
             var nbPlus = 0
             var nbMoins = 0
             var nbModif = 0
@@ -94,15 +111,16 @@ class Theme : TermeBase() {
                 val supp = themeJson.getString(3)
                 if (supp === "t") {
                     db.execSQL(
-                        "DELETE FROM " + ThemeContract.ThemeTable.TABLE_NAME + 
-                            " WHERE " + ThemeContract.ThemeTable.COLUMN_NAME_LANGUE_ID + " = \"" + langue + "\" AND " +
-                            ThemeContract.ThemeTable.COLUMN_NAME_DIST_ID + " = " + distId )
+                        "DELETE FROM " + ThemeContract.ThemeTable.TABLE_NAME +
+                                " WHERE " + ThemeContract.ThemeTable.COLUMN_NAME_LANGUE_ID + " = \"" + langue + "\" AND " +
+                                ThemeContract.ThemeTable.COLUMN_NAME_DIST_ID + " = " + distId
+                    )
                     nbMoins++
                 } else {
                     val selection =
                         ThemeContract.ThemeTable.COLUMN_NAME_LANGUE_ID + " = \"" + langue + "\"" +
                                 " AND " + ThemeContract.ThemeTable.COLUMN_NAME_DIST_ID + " = " + distId
-                    var theme = Theme.find_by(db, selection)
+                    var theme = findBy(db, selection)
                     if (theme == null) {
                         theme = Theme()
                         theme.distId = distId
