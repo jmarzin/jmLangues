@@ -1,26 +1,28 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
+        xmlns:tools="http://schemas.android.com/tools"
 
-              android:orientation="vertical"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:layout_alignParentTop="true"
-              android:layout_centerHorizontal="true"
-              android:divider="@drawable/divider"
-              android:focusable="false"
-              android:showDividers="middle">
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:divider="@drawable/divider"
+        android:focusable="false"
+        android:orientation="vertical"
+        android:showDividers="middle">
+
     <TextView
+            android:id="@+id/t_langue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/titre_langue"
-            android:id="@+id/t_langue"
             android:elegantTextHeight="false"
-            android:textStyle="bold"
-            android:textSize="@dimen/abc_text_size_title_material"
             android:gravity="center_horizontal"
             android:paddingBottom="10dp"
-            tools:ignore="PrivateResource" />
+            android:text="@string/titre_langue"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="@dimen/abc_text_size_title_material"
+            android:textStyle="bold"
+            tools:ignore="PrivateResource"
+            tools:targetApi="lollipop" />
 
     <!--android:paddingTop="@dimen/abc_action_bar_default_padding_material"-->
 
@@ -42,14 +44,18 @@
                 android:layout_gravity="right"
                 android:layout_span="1"
                 android:layout_weight="1"
+                android:adjustViewBounds="false"
                 android:background="#00ffffff"
                 android:baselineAlignBottom="false"
                 android:clickable="true"
                 android:contentDescription="@string/Italien"
+                android:cropToPadding="false"
                 android:nestedScrollingEnabled="true"
                 android:onClick="clickDrapeauItalien"
-                android:src="@drawable/italien" android:cropToPadding="false" android:adjustViewBounds="false"
-                android:scaleType="centerInside"/>
+                android:scaleType="centerInside"
+                android:src="@drawable/italien"
+                android:focusable="true"
+                tools:targetApi="lollipop" />
 
         <ImageButton
                 android:id="@+id/im_anglais"
@@ -65,7 +71,9 @@
                 android:contentDescription="@string/Anglais"
                 android:cropToPadding="false"
                 android:onClick="clickDrapeauAnglais"
-                android:src="@drawable/anglais" android:scaleType="centerInside"/>
+                android:scaleType="centerInside"
+                android:src="@drawable/anglais"
+                android:focusable="true" />
 
         <ImageButton
                 android:id="@+id/im_espagnol"
@@ -80,7 +88,9 @@
                 android:clickable="true"
                 android:contentDescription="@string/Espagnol"
                 android:onClick="clickDrapeauEspagnol"
-                android:src="@drawable/espagnol" android:scaleType="centerInside"/>
+                android:scaleType="centerInside"
+                android:src="@drawable/espagnol"
+                android:focusable="true" />
 
         <ImageButton
                 android:id="@+id/im_portugais"
@@ -95,7 +105,9 @@
                 android:clickable="true"
                 android:contentDescription="@string/Portugais"
                 android:onClick="clickDrapeauPortugais"
-                android:src="@drawable/portugais" android:scaleType="centerInside"/>
+                android:scaleType="centerInside"
+                android:src="@drawable/portugais"
+                android:focusable="true" />
 
         <ImageButton
                 android:id="@+id/im_occitan"
@@ -110,7 +122,9 @@
                 android:clickable="true"
                 android:contentDescription="@string/Occitan"
                 android:onClick="clickDrapeauOccitan"
-                android:src="@drawable/occitan" android:scaleType="centerInside"/>
+                android:scaleType="centerInside"
+                android:src="@drawable/occitan"
+                android:focusable="true" />
 
         <ImageButton
                 android:id="@+id/im_lingvo"
@@ -125,7 +139,9 @@
                 android:clickable="true"
                 android:contentDescription="@string/Lingvo"
                 android:onClick="clickDrapeauLingvo"
-                android:src="@drawable/lingvo" android:scaleType="centerInside"/>
+                android:scaleType="centerInside"
+                android:src="@drawable/lingvo"
+                android:focusable="true" />
 
         <ImageButton
                 android:id="@+id/im_allemand"
@@ -140,7 +156,9 @@
                 android:clickable="true"
                 android:contentDescription="@string/Allemand"
                 android:onClick="clickDrapeauAllemand"
-                android:src="@drawable/allemand" android:scaleType="centerInside"/>
+                android:scaleType="centerInside"
+                android:src="@drawable/allemand"
+                android:focusable="true" />
 
         <Space
                 android:layout_width="wrap_content"
@@ -149,117 +167,117 @@
 
     </LinearLayout>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                  xmlns:tools="http://schemas.android.com/tools"
-                  android:orientation="vertical"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:divider="@drawable/divider"
-                  android:focusable="false"
-                  android:showDividers="middle|end"
-                  android:dividerPadding="20dp">
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@drawable/divider"
+            android:dividerPadding="20dp"
+            android:focusable="false"
+            android:orientation="vertical"
+            android:showDividers="middle|end">
 
         <Button
-                style="@android:style/Widget.DeviceDefault.Button.Borderless"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/themes"
                 android:id="@+id/b_themes"
+                style="@android:style/Widget.DeviceDefault.Button.Borderless"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:gravity="center_vertical|left"
-                android:paddingStart="@dimen/taille_drap"
                 android:onClick="clickThemes"
+                android:paddingStart="@dimen/taille_drap"
+                android:text="@string/themes"
                 android:textColor="#fe000000" />
 
         <Button
-                style="@android:style/Widget.DeviceDefault.Button.Borderless"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/mots"
                 android:id="@+id/b_mots"
+                style="@android:style/Widget.DeviceDefault.Button.Borderless"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:gravity="center_vertical|left"
-                android:paddingStart="@dimen/taille_drap"
                 android:onClick="clickMots"
+                android:paddingStart="@dimen/taille_drap"
+                android:text="@string/mots"
                 android:textColor="#fe000000" />
 
         <Button
-                style="@android:style/Widget.DeviceDefault.Button.Borderless"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/verbes"
                 android:id="@+id/b_verbes"
+                style="@android:style/Widget.DeviceDefault.Button.Borderless"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:gravity="center_vertical|left"
-                android:paddingStart="@dimen/taille_drap"
                 android:onClick="clickVerbes"
+                android:paddingStart="@dimen/taille_drap"
+                android:text="@string/verbes"
                 android:textColor="#fe000000" />
+
         <Button
-                style="@android:style/Widget.DeviceDefault.Button.Borderless"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/formes_types"
                 android:id="@+id/b_formes_types"
+                style="@android:style/Widget.DeviceDefault.Button.Borderless"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:gravity="center_vertical|left"
-                android:paddingStart="@dimen/taille_drap"
                 android:onClick="clickFormesTypes"
+                android:paddingStart="@dimen/taille_drap"
+                android:text="@string/formes_types"
                 android:textColor="#fe000000" />
 
         <Button
-                style="@android:style/Widget.DeviceDefault.Button.Borderless"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/formes"
                 android:id="@+id/b_formes"
-                android:gravity="center_vertical|left"
-                android:paddingStart="@dimen/taille_drap"
-                android:onClick="clickFormes"
-                android:textColor="#fe000000" />
-
-        <Button
                 style="@android:style/Widget.DeviceDefault.Button.Borderless"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/revision"
-                android:id="@+id/b_revision"
                 android:gravity="center_vertical|left"
+                android:onClick="clickFormes"
                 android:paddingStart="@dimen/taille_drap"
+                android:text="@string/formes"
+                android:textColor="#fe000000" />
+
+        <Button
+                android:id="@+id/b_revision"
+                style="@android:style/Widget.DeviceDefault.Button.Borderless"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|left"
                 android:onClick="clickRevision"
+                android:paddingStart="@dimen/taille_drap"
+                android:text="@string/revision"
                 android:textColor="#fe000000"
                 android:visibility="visible" />
 
         <Button
-                style="@android:style/Widget.DeviceDefault.Button.Borderless"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/statistiques"
                 android:id="@+id/b_statistiques"
-                android:singleLine="true"
+                style="@android:style/Widget.DeviceDefault.Button.Borderless"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:gravity="center_vertical|left"
-                android:paddingStart="@dimen/taille_drap"
                 android:onClick="clickStatistiques"
-                android:textColor="#fe000000"/>
+                android:paddingStart="@dimen/taille_drap"
+                android:singleLine="true"
+                android:text="@string/statistiques"
+                android:textColor="#fe000000" />
 
         <Button
-                style="@android:style/Widget.DeviceDefault.Button.Borderless"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/parametrage"
                 android:id="@+id/b_parametrage"
-                android:singleLine="true"
-                android:gravity="center_vertical|left"
-                android:paddingStart="@dimen/taille_drap"
-                android:onClick="clickParametrage"
-                android:textColor="#fe000000"/>
-
-        <Button
                 style="@android:style/Widget.DeviceDefault.Button.Borderless"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/quitter"
-                android:id="@+id/b_quitter"
-                android:singleLine="true"
                 android:gravity="center_vertical|left"
+                android:onClick="clickParametrage"
                 android:paddingStart="@dimen/taille_drap"
+                android:singleLine="true"
+                android:text="@string/parametrage"
+                android:textColor="#fe000000" />
+
+        <Button
+                android:id="@+id/b_quitter"
+                style="@android:style/Widget.DeviceDefault.Button.Borderless"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|left"
                 android:onClick="clickQuitter"
-                android:textColor="#fe000000"/>
+                android:paddingStart="@dimen/taille_drap"
+                android:singleLine="true"
+                android:text="@string/quitter"
+                android:textColor="#fe000000" />
 
     </LinearLayout>
 

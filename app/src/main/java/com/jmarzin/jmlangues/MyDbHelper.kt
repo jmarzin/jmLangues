@@ -115,7 +115,7 @@ class MyDbHelper(context: Context) :
         private const val SQL_DELETE_FORMES =
             "DROP TABLE IF EXISTS " + FormeContract.FormeTable.TABLE_NAME
 
-        private val SQL_CREATE_SESSIONS =
+        private const val SQL_CREATE_SESSIONS =
             "CREATE TABLE " + SessionContract.SessionTable.TABLE_NAME + " (" +
                     SessionContract.SessionTable.COLUMN_NAME_ID + " INTEGER PRIMARY KEY AUTOINCREMENT" + COMMA_SEP +
                     SessionContract.SessionTable.COLUMN_NAME_LANGUE + TEXT_TYPE + COMMA_SEP +
@@ -139,10 +139,10 @@ class MyDbHelper(context: Context) :
                     SessionContract.SessionTable.COLUMN_NAME_FORME_TYPE_NUMERO + INTEGER_TYPE +
                     " )"
 
-        private val SQL_DELETE_SESSIONS =
+        private const val SQL_DELETE_SESSIONS =
             "DROP TABLE IF EXISTS " + SessionContract.SessionTable.TABLE_NAME
 
-        private val SQL_CREATE_STATS =
+        private const val SQL_CREATE_STATS =
             "CREATE TABLE " + StatsContract.StatsTable.TABLE_NAME + " (" +
                     StatsContract.StatsTable.COLUMN_NAME_ID + " INTEGER PRIMARY KEY AUTOINCREMENT" + COMMA_SEP +
                     StatsContract.StatsTable.COLUMN_NAME_LANGUE_ID + TEXT_TYPE + COMMA_SEP +
@@ -153,7 +153,7 @@ class MyDbHelper(context: Context) :
                     StatsContract.StatsTable.COLUMN_NAME_NB_ERREURS_FORMES + INTEGER_TYPE +
                     " )"
 
-        private val SQL_DELETE_STATS = "DROP TABLE IF EXISTS " + StatsContract.StatsTable.TABLE_NAME
+        private const val SQL_DELETE_STATS = "DROP TABLE IF EXISTS " + StatsContract.StatsTable.TABLE_NAME
 
         const val TABLE_NAME = "sessions"
         const val COLUMN_NAME_LANGUE = "langue"

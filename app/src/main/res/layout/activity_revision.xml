@@ -1,0 +1,140 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.jmarzin.jmlangues.RevisionActivity"
+    android:orientation="vertical"
+    android:clickable="true"
+    android:id="@+id/verifierOuAutreQuestion">
+
+    <include layout="@layout/toolbar"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/bravoOuEchec"
+        android:id="@+id/bravoOuEchec"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/ligne1Question"
+        android:id="@+id/ligne1Question"
+        style="@style/Base.TextAppearance.AppCompat.Body1"
+        android:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/ligne2Question"
+        android:maxEms="20"
+        android:id="@+id/ligne2Question"
+        style="@style/Base.TextAppearance.AppCompat.Body1"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal" />
+
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="1,2"
+        android:id="@+id/zoneQuestion">
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/inviteReponse"
+                android:id="@+id/inviteReponse"
+                style="@style/Base.TextAppearance.AppCompat.Body1" />
+
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/reponse"
+                android:inputType="textMultiLine"
+                style="@style/Base.TextAppearance.AppCompat.Body2"
+                android:maxLines="3"
+                android:lines="3"/>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <Space
+                android:layout_width="20px"
+                android:layout_height="20px" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/texteReponse"
+                android:id="@+id/texteReponse"
+                android:inputType="textMultiLine"
+                android:maxEms="12"
+                style="@style/Base.TextAppearance.AppCompat.Body2"
+                android:layout_marginLeft="10dp"
+                android:lines="2"
+                android:maxLines="5" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <Space
+                android:layout_width="20px"
+                android:layout_height="20px" />
+
+            <TextView
+                style="@style/Base.TextAppearance.AppCompat.Body2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/prononciation"
+                android:id="@+id/prononciation"
+                android:inputType="textMultiLine"
+                android:layout_marginLeft="10dp"
+                android:lines="1"
+                android:maxLines="5" />
+        </TableRow>
+
+    </TableLayout>
+
+    <ImageButton
+        android:layout_width="@dimen/taille_drap"
+        android:layout_height="wrap_content"
+        android:id="@+id/im_speaker"
+        android:src="@drawable/speaker"
+        android:layout_gravity="center_horizontal"
+        android:longClickable="false"
+        android:clickable="true"
+        android:baselineAlignBottom="true"
+        android:onClick="clickSpeaker"
+        android:visibility="visible"
+        android:cropToPadding="true"
+        android:contentDescription="@string/boutonSpeaker" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/boutonVeriferAutre"
+        android:id="@+id/boutonVerifierAutre"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:onClick="clickBouton" />
+
+</LinearLayout>

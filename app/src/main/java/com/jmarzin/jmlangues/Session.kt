@@ -72,6 +72,11 @@ class Session {
         motId = 0
     }
 
+    fun getNbTermesListe(): Int {
+        val uniqueListe = HashSet<Int>(this.liste)
+        return uniqueListe.size
+    }
+
     companion object {
 
         private fun serialize(content: IntArray): String {

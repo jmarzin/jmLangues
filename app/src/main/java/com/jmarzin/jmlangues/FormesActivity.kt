@@ -103,6 +103,7 @@ class FormesActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_autres, menu)
         menu.findItem(R.id.action_formes).isEnabled = false
+        menu.findItem(R.id.action_search).isVisible = true
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
         (menu.findItem(R.id.action_search).actionView as SearchView).apply {
             setSearchableInfo(searchManager.getSearchableInfo(componentName))

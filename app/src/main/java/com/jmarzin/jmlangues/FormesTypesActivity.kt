@@ -19,7 +19,7 @@ class FormesTypesActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_themes)
+        setContentView(R.layout.activity_formes_types)
         val dbManager = MyDbHelper(baseContext)
         db = dbManager.writableDatabase
         val selection = SessionContract.SessionTable.COLUMN_NAME_DERNIERE + " = 1"

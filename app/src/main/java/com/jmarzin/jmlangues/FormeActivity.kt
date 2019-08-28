@@ -83,7 +83,7 @@ class FormeActivity : AppCompatActivity() {
                     if (status != TextToSpeech.ERROR) {
                         if (locale != null) {
                             ttobj!!.language = locale
-                            ttobj!!.speak(forme.langue, TextToSpeech.QUEUE_ADD, null, forme.langue)
+                            ttobj!!.speak(forme.langue, TextToSpeech.QUEUE_ADD, null)
                         }
                     }
                 }

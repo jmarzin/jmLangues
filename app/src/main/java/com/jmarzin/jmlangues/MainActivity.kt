@@ -125,54 +125,35 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun clickThemes(view: View) {
-        if (okLangue()) {
-            lanceActivite(Intent(this, ThemesActivity::class.java))
-        }
+        if (okLangue()) lanceActivite(Intent(this, ThemesActivity::class.java))
     }
 
     fun clickMots(view: View) {
-        if (okLangue()) {
-            lanceActivite(Intent(this, MotsActivity::class.java))
-        }
+        if (okLangue()) lanceActivite(Intent(this, MotsActivity::class.java))
     }
 
     fun clickVerbes(view: View) {
-        if (okLangue()) {
-            lanceActivite(Intent(this, VerbesActivity::class.java))
-        }
+        if (okLangue()) lanceActivite(Intent(this, VerbesActivity::class.java))
     }
 
     fun clickFormesTypes(view: View) {
-        if (okLangue()) {
-            lanceActivite(Intent(this, FormesTypesActivity::class.java))
-        }
+        if (okLangue()) lanceActivite(Intent(this, FormesTypesActivity::class.java))
     }
 
     fun clickFormes(view: View) {
-        if (okLangue()) {
-            lanceActivite(Intent(this, FormesActivity::class.java))
-        }
+        if (okLangue()) lanceActivite(Intent(this, FormesActivity::class.java))
     }
 
     fun clickRevision(view: View) {
-        if (okLangue()) {
-            val intent = null // Intent(this, RevisionActivity::class.java)
-            lanceActivite(intent)
-        }
+        if (okLangue()) lanceActivite(Intent(this, RevisionActivity::class.java))
     }
 
     fun clickStatistiques(view: View) {
-        if (okLangue()) {
-            val intent = null // Intent(this, StatsActivity::class.java)
-            lanceActivite(intent)
-        }
+        if (okLangue()) lanceActivite(Intent(this, StatsActivity::class.java))
     }
 
     fun clickParametrage(view: View) {
-        if (okLangue()) {
-            val intent = null // Intent(this, ParametrageActivity::class.java)
-            lanceActivite(intent)
-        }
+        if (okLangue()) lanceActivite(Intent(this, ParametrageActivity::class.java))
     }
 
     fun clickQuitter(view: View) {

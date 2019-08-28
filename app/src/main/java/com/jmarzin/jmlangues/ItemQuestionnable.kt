@@ -11,7 +11,7 @@ import java.util.*
  */
 abstract class ItemQuestionnable : TermeBase() {
     var dateRev = ""
-    var poids = 0
+    var poids = 1
     var nbErr = 0
 
     internal abstract fun save(db: SQLiteDatabase)

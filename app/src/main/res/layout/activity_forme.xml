@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="10dp">
+        android:orientation="vertical"
+        android:paddingStart="10sp"
+        android:paddingEnd="10sp">
 
-    <include layout="@layout/toolbar"/>
+    <include layout="@layout/toolbar" />
+
     <TableLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -15,18 +18,19 @@
                 android:layout_height="fill_parent">
 
             <TextView
+                    android:id="@+id/l_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/l_id"
-                    android:id="@+id/l_id" />
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:id="@+id/t_id"
-                    android:paddingLeft="5dp" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
         <TableRow
@@ -34,18 +38,19 @@
                 android:layout_height="fill_parent">
 
             <TextView
+                    android:id="@+id/l_langue_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/l_langue_id"
-                    android:id="@+id/l_langue_id" />
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
-                    android:paddingLeft="5dp"
+                    android:id="@+id/t_langue_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:id="@+id/t_langue_id" />
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
         <TableRow
@@ -53,18 +58,19 @@
                 android:layout_height="fill_parent">
 
             <TextView
+                    android:id="@+id/l_verbe_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/l_verbe_id"
-                    android:id="@+id/l_verbe_id" />
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
-                    android:paddingLeft="5dp"
+                    android:id="@+id/t_verbe_langue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:id="@+id/t_verbe_langue" />
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
 
@@ -73,18 +79,19 @@
                 android:layout_height="fill_parent">
 
             <TextView
+                    android:id="@+id/l_forme_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/l_forme_id"
-                    android:id="@+id/l_forme_id" />
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
-                    android:paddingLeft="5dp"
+                    android:id="@+id/t_forme"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:id="@+id/t_forme" />
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
         <TableRow
@@ -92,17 +99,18 @@
                 android:layout_height="fill_parent">
 
             <TextView
+                    android:id="@+id/l_langue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:id="@+id/l_langue" />
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
-                    android:paddingLeft="5dp"
+                    android:id="@+id/t_langue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:id="@+id/t_langue" />
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
         <TableRow
@@ -110,18 +118,19 @@
                 android:layout_height="fill_parent">
 
             <TextView
+                    android:id="@+id/l_date_rev"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/l_date_rev"
-                    android:id="@+id/l_date_rev" />
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
-                    android:paddingLeft="5dp"
+                    android:id="@+id/t_date_rev"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:id="@+id/t_date_rev" />
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
         <TableRow
@@ -129,18 +138,19 @@
                 android:layout_height="fill_parent">
 
             <TextView
+                    android:id="@+id/l_poids"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/l_poids"
-                    android:id="@+id/l_poids" />
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
-                    android:paddingLeft="5dp"
+                    android:id="@+id/t_poids"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:id="@+id/t_poids" />
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
         <TableRow
@@ -148,18 +158,19 @@
                 android:layout_height="fill_parent">
 
             <TextView
+                    android:id="@+id/l_nberr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/l_nberr"
-                    android:id="@+id/l_nberr" />
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
-                    android:paddingLeft="5dp"
+                    android:id="@+id/t_nberr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:id="@+id/t_nberr" />
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
         <TableRow
@@ -167,18 +178,19 @@
                 android:layout_height="fill_parent">
 
             <TextView
+                    android:id="@+id/l_dist_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/l_dist_id"
-                    android:id="@+id/l_dist_id" />
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
-                    android:paddingLeft="5dp"
+                    android:id="@+id/t_dist_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:id="@+id/t_dist_id" />
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
         <TableRow
@@ -186,18 +198,19 @@
                 android:layout_height="fill_parent">
 
             <TextView
+                    android:id="@+id/l_date_maj"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/l_date_maj"
-                    android:id="@+id/l_date_maj" />
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
-                    android:paddingLeft="5dp"
+                    android:id="@+id/t_date_maj"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:id="@+id/t_date_maj" />
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
     </TableLayout>
 </LinearLayout>

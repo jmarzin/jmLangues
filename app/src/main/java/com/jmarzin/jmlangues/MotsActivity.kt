@@ -23,7 +23,7 @@ class MotsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_verbes)
+        setContentView(R.layout.activity_mots)
         val dbManager = MyDbHelper(baseContext)
         db = dbManager.writableDatabase
         session = Session.findBy(db, SessionContract.SessionTable.COLUMN_NAME_DERNIERE + " = 1")
@@ -102,6 +102,7 @@ class MotsActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_autres, menu)
         menu.findItem(R.id.action_mots).isEnabled = false
+        menu.findItem(R.id.action_search).isVisible = true
         // Get the SearchView and set the searchable configuration
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
         (menu.findItem(R.id.action_search).actionView as SearchView).apply {

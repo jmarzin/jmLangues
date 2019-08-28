@@ -1,0 +1,245 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:context="com.jmarzin.jmlangues.ParametrageActivity">
+
+    <include layout="@layout/toolbar" />
+
+    <Button
+            android:id="@+id/b_prepareListe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:clickable="true"
+            android:enabled="true"
+            android:onClick="onPrepareListe"
+            android:text="@string/preparerListe"
+            android:focusable="true" />
+
+    <TableLayout
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:stretchColumns="1,2,3"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:weightSum="5">
+
+        <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+            <TextView
+                    android:id="@+id/invitePoidsMin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="@string/invitePoidsMin"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <EditText
+                    android:id="@+id/t_poidsMin"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:enabled="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:inputType="number"
+                    android:labelFor="@string/invitePoidsMin" />
+
+            <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+        </TableRow>
+
+        <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+            <TextView
+                    android:id="@+id/InviteAgeMin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="true"
+                    android:text="@string/inviteAgeMin"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <EditText
+                    android:id="@+id/t_ageMin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:inputType="number" />
+
+            <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/jours"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+        </TableRow>
+
+        <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+            <TextView
+                    android:id="@+id/inviteErrMin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/inviteErrMin"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <EditText
+                    android:id="@+id/t_errMin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:inputType="number" />
+
+            <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/erreurs"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        </TableRow>
+
+        <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+            <TextView
+                    android:id="@+id/inviteNivMax"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/inviteNivMax"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <EditText
+                    android:id="@+id/t_nivMax"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:inputType="number" />
+
+        </TableRow>
+
+    </TableLayout>
+
+    <Switch
+            android:id="@+id/t_conserveStats"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onChangeConserveStats"
+            android:text="@string/conserveStats"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <Switch
+            android:id="@+id/t_parleAuto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onChangeParleAuto"
+            android:singleLine="false"
+            android:splitTrack="false"
+            android:switchPadding="35dp"
+            android:text="@string/parleAuto"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <RadioGroup
+            android:id="@+id/radio_modeRev"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:measureWithLargestChild="false"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:orientation="horizontal">
+
+        <RadioButton
+                android:id="@+id/t_vocabulaire"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="onChangeChoix"
+                android:text="@string/Vocabulaire" />
+
+        <RadioButton
+                android:id="@+id/t_conjugaisons"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="onChangeChoix"
+                android:text="@string/Conjugaisons" />
+
+        <RadioButton
+                android:id="@+id/t_mixte"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="onChangeChoix"
+                android:text="@string/Mixte" />
+    </RadioGroup>
+
+    <LinearLayout
+            android:id="@+id/layout_themes"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:orientation="vertical">
+
+        <TextView
+                android:id="@+id/inviteRestrictionThemes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/inviteRestrictionThemes"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <ListView
+                android:id="@+id/l_themes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:choiceMode="multipleChoice"
+                android:fastScrollAlwaysVisible="true"
+                android:fastScrollEnabled="true" />
+    </LinearLayout>
+
+    <LinearLayout
+            android:id="@+id/layout_verbes"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        <TextView
+                android:id="@+id/inviteRestrictionVerbes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/inviteRestrictionVerbes"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <ListView
+                android:id="@+id/l_verbes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:choiceMode="multipleChoice"
+                android:fastScrollAlwaysVisible="true"
+                android:fastScrollEnabled="true" />
+    </LinearLayout>
+
+</LinearLayout>

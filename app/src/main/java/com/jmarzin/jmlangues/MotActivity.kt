@@ -91,7 +91,7 @@ class MotActivity : AppCompatActivity() {
                     if (status != TextToSpeech.ERROR) {
                         if (locale != null) {
                             ttobj!!.language = locale
-                            ttobj!!.speak(mot.langue, TextToSpeech.QUEUE_ADD, null, mot.langue)
+                            ttobj!!.speak(mot.langue, TextToSpeech.QUEUE_ADD, null)
                         }
                     }
                 }

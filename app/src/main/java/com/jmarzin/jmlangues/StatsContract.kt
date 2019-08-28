@@ -9,14 +9,14 @@ class StatsContract {
 
     abstract class StatsTable : BaseColumns {
         companion object {
-            val TABLE_NAME = "stats"
-            val COLUMN_NAME_ID = "id"
-            val COLUMN_NAME_LANGUE_ID = "langueId"
-            val COLUMN_NAME_DATE = "date"
-            val COLUMN_NAME_NB_QUESTIONS_MOTS = "nb_questions_mots"
-            val COLUMN_NAME_NB_ERREURS_MOTS = "nb_erreurs_mots"
-            val COLUMN_NAME_NB_QUESTIONS_FORMES = "nb_questions_formes"
-            val COLUMN_NAME_NB_ERREURS_FORMES = "nb_erreurs_formes"
+            const val TABLE_NAME = "stats"
+            const val COLUMN_NAME_ID = "_id"
+            const val COLUMN_NAME_LANGUE_ID = "langue_id"
+            const val COLUMN_NAME_DATE = "date"
+            const val COLUMN_NAME_NB_QUESTIONS_MOTS = "nb_questions_mots"
+            const val COLUMN_NAME_NB_ERREURS_MOTS = "nb_erreurs_mots"
+            const val COLUMN_NAME_NB_QUESTIONS_FORMES = "nb_questions_formes"
+            const val COLUMN_NAME_NB_ERREURS_FORMES = "nb_erreurs_formes"
         }
     }
 }

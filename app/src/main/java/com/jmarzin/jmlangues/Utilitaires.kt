@@ -2,6 +2,7 @@ package com.jmarzin.jmlangues
 
 import android.app.Activity
 import android.content.Intent
+import android.database.sqlite.SQLiteDatabase
 import android.support.v4.app.NavUtils
 import android.view.MenuItem
 import java.sql.Timestamp
@@ -67,19 +68,13 @@ object Utilitaires {
                 razStart(Intent(activity, FormesActivity::class.java))
             }
             R.id.action_revision -> {
-//                intent = Intent(this, RevisionActivity::class.java)
-//                startActivity(intent)
-//                finish()
+                razStart(Intent(activity, RevisionActivity::class.java))
             }
             R.id.action_statistiques -> {
-//                intent = Intent(this, StatsActivity::class.java)
-//                startActivity(intent)
-//                finish()
+                razStart(Intent(activity, StatsActivity::class.java))
             }
             R.id.action_parametrage -> {
-//                intent = Intent(this, ParametrageActivity::class.java)
-//                startActivity(intent)
-//                finish()
+                razStart(Intent(activity, ParametrageActivity::class.java))
             }
         }
         return true
@@ -124,20 +119,20 @@ object Utilitaires {
         var cond6 = ""
         if (objets === "Mots") {
             cond1 =
-                MotContract.MotTable.COLUMN_NAME_LANGUE_ID + " = \"" + session.langue!!.substring(
+                """${MotContract.MotTable.COLUMN_NAME_LANGUE_ID} = "${session.langue!!.substring(
                     0,
                     2
-                ).toLowerCase(Locale.FRANCE) + "\""
+                ).toLowerCase(Locale.FRANCE)}""""
             cond6 =
-                " AND " + MotContract.MotTable.COLUMN_NAME_LANGUE_NIVEAU + " <= \"" + session.nivMax + "\""
+                """ AND ${MotContract.MotTable.COLUMN_NAME_LANGUE_NIVEAU} <= "${session.nivMax}""""
             if (session.ageRev != 0) cond2 =
-                " AND " + MotContract.MotTable.COLUMN_NAME_DATE_REV + " <= \"" + dateRev + "\""
+                """ AND ${MotContract.MotTable.COLUMN_NAME_DATE_REV} <= "$dateRev""""
             if (session.poidsMin > 1) cond3 =
-                " AND " + MotContract.MotTable.COLUMN_NAME_POIDS + " >= " + session.poidsMin
+                """ AND ${MotContract.MotTable.COLUMN_NAME_POIDS} >= ${session.poidsMin}"""
             if (session.errMin > 0) cond4 =
-                " AND " + MotContract.MotTable.COLUMN_NAME_NB_ERR + " >= " + session.errMin
+                """ AND ${MotContract.MotTable.COLUMN_NAME_NB_ERR} >= ${session.errMin}"""
             if (session.listeThemes.isNotEmpty()) {
-                cond5 = " AND " + MotContract.MotTable.COLUMN_NAME_THEME_ID + " IN ("
+                cond5 = """ AND ${MotContract.MotTable.COLUMN_NAME_THEME_ID} IN ("""
                 for (i in session.listeThemes.indices) {
                     if (i != 0) {
                         cond5 += ","
@@ -152,13 +147,13 @@ object Utilitaires {
                     0, 2
                 ).toLowerCase(Locale.FRANCE) + "\""
             if (session.ageRev != 0) cond2 =
-                " AND " + FormeContract.FormeTable.COLUMN_NAME_DATE_REV + " <= \"" + dateRev + "\""
+                """ AND ${FormeContract.FormeTable.COLUMN_NAME_DATE_REV} <= "$dateRev""""
             if (session.poidsMin > 1) cond3 =
-                " AND " + FormeContract.FormeTable.COLUMN_NAME_POIDS + " >= " + session.poidsMin
+                """ AND ${FormeContract.FormeTable.COLUMN_NAME_POIDS} >= ${session.poidsMin}"""
             if (session.errMin > 0) cond4 =
-                " AND " + FormeContract.FormeTable.COLUMN_NAME_NB_ERR + " >= " + session.errMin
+                """ AND ${FormeContract.FormeTable.COLUMN_NAME_NB_ERR} >= ${session.errMin}"""
             if (session.listeVerbes.isNotEmpty()) {
-                cond5 = " AND " + FormeContract.FormeTable.COLUMN_NAME_VERBE_ID + " IN ("
+                cond5 = """ AND ${FormeContract.FormeTable.COLUMN_NAME_VERBE_ID} IN ("""
                 for (i in session.listeVerbes.indices) {
                     if (i != 0) {
                         cond5 += ","
@@ -170,48 +165,45 @@ object Utilitaires {
         }
         return cond1 + cond2 + cond3 + cond4 + cond5 + cond6
     }
-//
-//    fun creerListe(db: SQLiteDatabase, session: Session) {
-//
-//        var id: String
-//        var poids: String
-//        var c: Cursor
-//        session.liste = ArrayList()
-//        if (session.modeRevision.equals("Vocabulaire") || session.modeRevision.equals("Mixte")) {
-//            c = Mot.where(db, getSelection(session, "Mots"))
-//            id = MotContract.MotTable.COLUMN_NAME_ID
-//            poids = MotContract.MotTable.COLUMN_NAME_POIDS
-//            for (i in 0 until c.count) {
-//                c.moveToNext()
-//                val element = c.getInt(c.getColumnIndexOrThrow(id))
-//                val nb = c.getInt(c.getColumnIndexOrThrow(poids))
-//                for (j in 1..nb) {
-//                    session.liste.add(element)
-//                }
-//            }
-//            c.close()
-//        }
-//        if (session.modeRevision.equals("Conjugaisons") || session.modeRevision.equals("Mixte")) {
-//            c = Forme.where(db, getSelection(session, "Formes"))
-//            id = FormeContract.FormeTable.COLUMN_NAME_ID
-//            poids = FormeContract.FormeTable.COLUMN_NAME_POIDS
-//            for (i in 0 until c.count) {
-//                c.moveToNext()
-//                val element = c.getInt(c.getColumnIndexOrThrow(id))
-//                val nb = c.getInt(c.getColumnIndexOrThrow(poids))
-//                for (j in 1..nb) {
-//                    session.liste.add(-element)
-//                }
-//            }
-//            c.close()
-//        }
-//    }
-//
-//    fun initRevision(db: SQLiteDatabase, session: Session) {
-//        if (session.modeRevision == null) {
-//            session.modeRevision = "Vocabulaire"
-//            creerListe(db, session)
-//            session.save(db)
-//        }
-//    }
+
+    fun creerListe(db: SQLiteDatabase, session: Session) {
+
+        session.liste = ArrayList()
+        if (session.modeRevision.equals("Vocabulaire") || session.modeRevision.equals("Mixte")) {
+            val c = Mot.where(db, getSelection(session, "Mots"))
+            val id = MotContract.MotTable.COLUMN_NAME_ID
+            val poids = MotContract.MotTable.COLUMN_NAME_POIDS
+            for (i in 0 until c.count) {
+                c.moveToNext()
+                val element = c.getInt(c.getColumnIndexOrThrow(id))
+                val nb = c.getInt(c.getColumnIndexOrThrow(poids))
+                for (j in 1..nb) {
+                    session.liste.add(element)
+                }
+            }
+            c.close()
+        }
+        if (session.modeRevision.equals("Conjugaisons") || session.modeRevision.equals("Mixte")) {
+            val c = Forme.where(db, getSelection(session, "Formes"))
+            val id = FormeContract.FormeTable.COLUMN_NAME_ID
+            val poids = FormeContract.FormeTable.COLUMN_NAME_POIDS
+            for (i in 0 until c.count) {
+                c.moveToNext()
+                val element = c.getInt(c.getColumnIndexOrThrow(id))
+                val nb = c.getInt(c.getColumnIndexOrThrow(poids))
+                for (j in 1..nb) {
+                    session.liste.add(-element)
+                }
+            }
+            c.close()
+        }
+    }
+
+    fun initRevision(db: SQLiteDatabase, session: Session) {
+        if (session.modeRevision == null) {
+            session.modeRevision = "Vocabulaire"
+            creerListe(db, session)
+            session.save(db)
+        }
+    }
 }

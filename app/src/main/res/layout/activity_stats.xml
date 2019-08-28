@@ -1,0 +1,73 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:orientation="vertical" android:layout_width="match_parent"
+android:layout_height="wrap_content">
+    <include layout="@layout/toolbar"/>
+    <com.jjoe64.graphview.GraphView
+        android:layout_width="match_parent"
+        android:layout_height="200dip"
+        android:id="@+id/graph" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="32dp"
+        android:paddingRight="25dp"
+        android:divider="@android:drawable/divider_horizontal_dark"
+        android:paddingTop="25dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/t_date"
+            android:gravity="center_vertical|left"
+            android:layout_weight="10"
+            android:id="@+id/t_date" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/t_nbQuestionsMots"
+            android:layout_weight="1"
+            android:gravity="center_vertical|right"
+            android:id="@+id/t_nbQuestionsMots" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/t_nbErreursMots"
+            android:layout_weight="1"
+            android:gravity="center_vertical|right"
+            android:id="@+id/t_nbErreursMots" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/t_nbQuestionsFormes"
+            android:layout_weight="1"
+            android:gravity="center_vertical|right"
+            android:id="@+id/t_nbQuestionsFormes" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/t_nbErreursFormes"
+            android:layout_weight="1"
+            android:gravity="center_vertical|right"
+            android:id="@+id/t_nbErreursFormes" />
+
+    </LinearLayout>
+
+    <ListView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/listView"
+        android:fastScrollAlwaysVisible="true"
+        android:fastScrollEnabled="true" />
+
+</LinearLayout>

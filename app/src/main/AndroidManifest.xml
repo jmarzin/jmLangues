@@ -7,12 +7,42 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
+            android:allowBackup="false"
             android:icon="@drawable/icon"
             android:label="@string/app_name"
             android:supportsRtl="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            tools:ignore="GoogleAppIndexingWarning"
-            android:allowBackup="false">
+            tools:ignore="GoogleAppIndexingWarning">
+        <activity
+                android:name=".StatsActivity"
+                android:label="@string/title_activity_stats"
+                android:launchMode="singleTask"
+                android:parentActivityName=".MainActivity"
+                android:theme="@style/NoActionBar">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.jmarzin.jmlangues.MainActivity" />
+        </activity>
+        <activity
+                android:name=".ParametrageActivity"
+                android:label="@string/title_activity_parametrage"
+                android:launchMode="singleTask"
+                android:parentActivityName=".MainActivity"
+                android:theme="@style/NoActionBar">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.jmarzin.jmlangues.MainActivity" />
+        </activity>
+        <activity
+                android:name=".RevisionActivity"
+                android:label="@string/title_activity_revision"
+                android:launchMode="singleTask"
+                android:parentActivityName=".MainActivity"
+                android:theme="@style/NoActionBar">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.jmarzin.jmlangues.MainActivity" />
+        </activity>
         <activity
                 android:name=".FormeActivity"
                 android:label="@string/title_activity_forme"
