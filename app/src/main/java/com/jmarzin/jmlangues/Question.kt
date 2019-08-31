@@ -1,12 +1,11 @@
 package com.jmarzin.jmlangues
 
-import android.database.sqlite.SQLiteDatabase
 import java.util.*
 
 /**
  * Created by jacques on 24/01/15.
  */
-class Question(db: SQLiteDatabase, session: Session, aleatoire: Random) {
+class Question(aleatoire: Random) {
 
     var item: ItemQuestionnable? = null
     var ligne1 = ""
@@ -16,22 +15,18 @@ class Question(db: SQLiteDatabase, session: Session, aleatoire: Random) {
     init {
         fun suppIdTire(idTire: Int) {
             @Suppress("ControlFlowWithEmptyBody")
-            while (session.liste.remove(idTire)) {
+            while (DSH.session.liste.remove(idTire)) {
             }
         }
         this.item = null
-        while (session.liste.size !== 0 && this.item == null) {
-            val idTire = session.liste[aleatoire.nextInt(session.liste.size)]
+        while (DSH.session.liste.size != 0 && this.item == null) {
+            val idTire = DSH.session.liste[aleatoire.nextInt(DSH.session.liste.size)]
             when {
                 idTire > 0 -> {
-                    val mot = Mot.find(db, idTire)
+                    val mot = Mot.find(idTire)
                     if (mot != null) {
                         this.item = mot
-                        if (mot.theme != null) {
-                            this.ligne1 = mot.theme.langue
-                        } else {
-                            this.ligne1 = ""
-                        }
+                        this.ligne1 = mot.theme.langue
                         this.ligne2 = mot.francais
                         this.prononciation = mot.pronunciation
                     } else {
@@ -39,7 +34,7 @@ class Question(db: SQLiteDatabase, session: Session, aleatoire: Random) {
                     }
                 }
                 else -> {
-                    val forme = Forme.find(db, -idTire)
+                    val forme = Forme.find(-idTire)
                     if (forme != null) {
                         this.item = forme
                         if (forme.verbe != null) {

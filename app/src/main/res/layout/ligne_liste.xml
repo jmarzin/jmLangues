@@ -11,12 +11,10 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceListItemSmall"
             android:gravity="center_vertical|end"
-            android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-            android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
             android:minHeight="?android:attr/listPreferredItemHeightSmall"
             android:layout_weight="6"
-            android:paddingLeft="0sp"
-            android:paddingRight="0sp"
+            android:paddingStart="5sp"
+            android:paddingEnd="5sp"
             android:textSize="20sp" android:textAlignment="viewEnd"/>
     <TextView
             android:id="@id/text2"

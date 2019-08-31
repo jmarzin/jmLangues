@@ -1,11 +1,9 @@
 package com.jmarzin.jmlangues
 
-import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
-import android.support.v7.app.AppCompatActivity
+import android.view.KeyEvent
 import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import java.sql.Timestamp
@@ -13,14 +11,13 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class RevisionActivity : AppCompatActivity() {
 
-    var db: SQLiteDatabase? = null
-    var session = Session()
+
+class RevisionActivity : MesActivites() {
+
     private var question: Question? = null
     private var aleatoire: Random = Random()
     private var ttobj: TextToSpeech? = null
-    private var locale: Locale? = null
     private var imSpeaker: ImageButton? = null
     private var dateCourante = ""
     private var stats: Stats? = null
@@ -28,41 +25,43 @@ class RevisionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_revision)
-        val dbManager = MyDbHelper(baseContext)
-        db = dbManager.writableDatabase
-        session = Session.findBy(db, SessionContract.SessionTable.COLUMN_NAME_DERNIERE + " = 1")
         val date = Timestamp(System.currentTimeMillis())
         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.FRANCE)
         dateCourante = sdf.format(date)
 
         val cond =
-            StatsContract.StatsTable.COLUMN_NAME_LANGUE_ID + " = \"" + session.langue!!.substring(
-                0,
-                2
-            ).toLowerCase(Locale.FRANCE) + "\" AND " + StatsContract.StatsTable.COLUMN_NAME_DATE + " = \"" + dateCourante + "\""
-        stats = Stats.findBy(db!!, cond)
+            StatsContract.StatsTable.COLUMN_NAME_LANGUE_ID + " = \"" + DSH.session.langueId() + "\" AND " +
+                    StatsContract.StatsTable.COLUMN_NAME_DATE + " = \"" + dateCourante + "\""
+        stats = Stats.findBy(cond)
 
         setSupportActionBar(findViewById(R.id.my_toolbar))
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setIcon(Utilitaires.drapeau(session.langue))
-
-        locale = Utilitaires.setLocale(session.langue!!)
+        supportActionBar?.setIcon(DSH.session.drapeau())
 
         this.title = "  Révision"
 
-        Utilitaires.initRevision(db!!, session)
+        DSH.session.initRevision()
+
+        val mReponse = findViewById<EditText>(R.id.reponse)
+        mReponse.setOnKeyListener(View.OnKeyListener { _, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN) {
+                val mBouton = findViewById<Button>(R.id.boutonVerifierAutre)
+                mBouton.callOnClick()
+                return@OnKeyListener true //return@OnKeyListener true
+            }
+            false
+        })
+
         poseQuestion()
     }
 
     override fun onResume() {
         super.onResume()
-        session = Session.findBy(db, SessionContract.SessionTable.COLUMN_NAME_DERNIERE + " = 1")
         ttobj = TextToSpeech(
             applicationContext,
             TextToSpeech.OnInitListener { status ->
                 if (status != TextToSpeech.ERROR) {
-                    if (locale != null) {
-                        ttobj!!.language = locale
+                    if (DSH.session.locale() != null) {
+                        ttobj!!.language = DSH.session.locale()
                     }
                 }
             }
@@ -70,7 +69,6 @@ class RevisionActivity : AppCompatActivity() {
     }
 
     override fun onPause() {
-        session.save(db)
         if (ttobj != null) {
             ttobj!!.stop()
             ttobj!!.shutdown()
@@ -79,24 +77,18 @@ class RevisionActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_autres, menu)
+        super.onCreateOptionsMenu(menu)
         menu.findItem(R.id.action_revision).isEnabled = false
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        Utilitaires.traiteMenu(item, this, session)
-        return super.onOptionsItemSelected(item)
-    }
-
     private fun ajusteSousTitre() {
         var sousTitre = "   "
-        if (session.nbQuestions > 0) {
-            sousTitre += session.nbErreurs.toString() + " E, " + session.nbQuestions +
-                    " Q (" + session.nbErreurs * 100 / session.nbQuestions + " %), "
+        if (DSH.session.nbQuestions > 0) {
+            sousTitre += DSH.session.nbErreurs.toString() + " E, " + DSH.session.nbQuestions +
+                    " Q (" + DSH.session.nbErreurs * 100 / DSH.session.nbQuestions + " %), "
         }
-        sousTitre += "R " + session.getNbTermesListe() + " (" + session.liste.size + ")"
+        sousTitre += "R " + DSH.session.getNbTermesListe() + " (" + DSH.session.liste.size + ")"
         supportActionBar?.subtitle = sousTitre
     }
 
@@ -111,7 +103,7 @@ class RevisionActivity : AppCompatActivity() {
         val mReponse = findViewById<EditText>(R.id.reponse)
         val mzoneQuestion = findViewById<TableLayout>(R.id.zoneQuestion)
         imSpeaker = findViewById(R.id.im_speaker)
-        question = Question(db!!, session, aleatoire)
+        question = Question(aleatoire)
         imSpeaker!!.visibility = View.INVISIBLE
         if (question!!.item == null) {
             mBravo.text = getString(R.string.Plus_de_questions)
@@ -132,7 +124,8 @@ class RevisionActivity : AppCompatActivity() {
     }
 
     fun clickSpeaker(view: View) {
-        val aPrononcer = eclate(question!!.item!!.langue)
+        val aPrononcer = Mot.eclate(question!!.item!!.langue, true)
+        @Suppress("DEPRECATION")
         ttobj!!.speak(aPrononcer, TextToSpeech.QUEUE_ADD, null)
     }
 
@@ -147,33 +140,33 @@ class RevisionActivity : AppCompatActivity() {
 
             val nouveauPoids: Int
             val mReponse = findViewById<EditText>(R.id.reponse)
-            session.nbQuestions++
-            if (egalite(mReponse.text.toString(), question!!.item!!.langue)) {
+            DSH.session.nbQuestions++
+            if (egalite(mReponse.text.toString().trim(), question!!.item!!.langue)) {
                 val mBravo = findViewById<TextView>(R.id.bravoOuEchec)
                 mBravo.text = getString(R.string.Bravo)
                 mBravo.setTextColor(-0x1fb34fb)
                 mtexteReponse.setTextColor(-0x1fb34fb)
-                nouveauPoids = question!!.item!!.reduit(db!!, session)
+                nouveauPoids = question!!.item!!.reduit()
                 majStats(true)
 
             } else {
-                session.nbErreurs++
+                DSH.session.nbErreurs++
                 val mBravo = findViewById<TextView>(R.id.bravoOuEchec)
                 mBravo.text = getString(R.string.Erreur)
                 mBravo.setTextColor(-0x134fbfd)
                 mtexteReponse.setTextColor(-0x134fbfd)
-                nouveauPoids = question!!.item!!.augmente(db!!, session)
+                nouveauPoids = question!!.item!!.augmente()
                 majStats(false)
             }
             texte += " ($nouveauPoids)"
-            mtexteReponse.text = eclate(texte)
+            mtexteReponse.text = Mot.eclate(texte, false)
             mPrononciation.text = question!!.prononciation
             mBouton.text = getString(R.string.Autre_question)
-            if (locale != null) {
+            if (DSH.session.locale() != null) {
                 imSpeaker!!.visibility = View.VISIBLE
             }
             ajusteSousTitre()
-            if (session.parleAuto == 1) {
+            if (DSH.session.parleAuto == 1) {
                 clickSpeaker(view)
             }
         } else {
@@ -190,31 +183,11 @@ class RevisionActivity : AppCompatActivity() {
         return false
     }
 
-    private fun eclate(texte: String): String {
-        var texteEclate: String
-        val ou = when (question!!.item!!.langueId) {
-            "it" -> "o"
-            "an" -> "or"
-            "es" -> "o"
-            "po" -> "ou"
-            "li" -> "aŭ"
-            "oc" -> "o"
-            "al" -> "oder"
-            else -> "/"
-        }
-        val tableau = texte.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-        texteEclate = tableau[0]
-        for (i in 1 until tableau.size) {
-            texteEclate += " " + ou + " " + tableau[i]
-        }
-        return texteEclate
-    }
-
     private fun majStats(resultat: Boolean) {
         if (stats == null) {
             stats = Stats()
             stats!!.dateRev = dateCourante
-            stats!!.langueId = session.langue!!.substring(0, 2).toLowerCase(Locale.FRANCE)
+            stats!!.langueId = DSH.session.langueId()
         }
 
         if (question!!.item is Mot) {
@@ -225,6 +198,6 @@ class RevisionActivity : AppCompatActivity() {
             stats!!.nbErreursFormes = stats!!.nbErreursFormes.plus(if (resultat) 0 else 1)
         }
 
-        stats!!.save(db!!)
+        stats!!.save()
     }
 }

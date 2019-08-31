@@ -1,7 +1,5 @@
 package com.jmarzin.jmlangues
 
-import android.database.sqlite.SQLiteDatabase
-
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
@@ -14,7 +12,7 @@ abstract class ItemQuestionnable : TermeBase() {
     var poids = 1
     var nbErr = 0
 
-    internal abstract fun save(db: SQLiteDatabase)
+    internal abstract fun save()
 
     private fun majDateRev() {
         val date = Timestamp(System.currentTimeMillis())
@@ -22,11 +20,11 @@ abstract class ItemQuestionnable : TermeBase() {
         this.dateRev = sdf.format(date)
     }
 
-    fun reduit(db: SQLiteDatabase, session: Session): Int {
+    fun reduit(): Int {
         majDateRev()
         val nRemove: Int
         val nouveauPoids: Int
-        val facteur: Int = if (this.javaClass.name.contains("Mot")) {
+        val facteur: Int = if (this is Mot) {
             1
         } else {
             -1
@@ -41,19 +39,19 @@ abstract class ItemQuestionnable : TermeBase() {
         var valeur: Int?
         for (i in 0 until nRemove) {
             valeur = facteur * id
-            session.liste.remove(valeur)
+            DSH.session.liste.remove(valeur)
         }
-        if (session.errMin > 0 && nbErr > 0) {
+        if (DSH.session.errMin > 0 && nbErr > 0) {
             nbErr -= 1
         }
         poids = nouveauPoids
-        this.save(db)
+        this.save()
         return nouveauPoids
     }
 
-    fun augmente(db: SQLiteDatabase, session: Session): Int {
+    fun augmente(): Int {
         majDateRev()
-        val facteur: Int = if (this.javaClass.name.contains("Mot")) {
+        val facteur: Int = if (this is Mot) {
             1
         } else {
             -1
@@ -61,11 +59,11 @@ abstract class ItemQuestionnable : TermeBase() {
         val nouveauPoids = poids * 2
         val nAjout = nouveauPoids - poids
         for (i in 0 until nAjout) {
-            session.liste.add(facteur * id)
+            DSH.session.liste.add(facteur * id)
         }
         nbErr += 1
         poids = nouveauPoids
-        this.save(db)
+        this.save()
         return nouveauPoids
     }
 }

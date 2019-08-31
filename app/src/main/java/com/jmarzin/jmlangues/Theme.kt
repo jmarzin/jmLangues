@@ -2,7 +2,6 @@ package com.jmarzin.jmlangues
 
 import android.content.ContentValues
 import android.database.Cursor
-import android.database.sqlite.SQLiteDatabase
 import org.json.JSONArray
 
 /**
@@ -11,7 +10,7 @@ import org.json.JSONArray
 class Theme : TermeBase() {
     var numero: Int = 0
 
-    fun save(db: SQLiteDatabase) {
+    fun save() {
         val values = ContentValues()
 
         values.put(ThemeContract.ThemeTable.COLUMN_NAME_DATE_MAJ, dateMaj)
@@ -22,16 +21,16 @@ class Theme : TermeBase() {
 
         if (this.id > 0) {
             val selection = ThemeContract.ThemeTable.COLUMN_NAME_ID + " = " + id
-            db.update(ThemeContract.ThemeTable.TABLE_NAME, values, selection, null)
+            DSH.db().update(ThemeContract.ThemeTable.TABLE_NAME, values, selection, null)
         } else {
-            this.id = db.insert(ThemeContract.ThemeTable.TABLE_NAME, null, values).toInt()
+            this.id = DSH.db().insert(ThemeContract.ThemeTable.TABLE_NAME, null, values).toInt()
         }
     }
 
     companion object {
 
-        fun findBy(db: SQLiteDatabase, selection: String): Theme? {
-            val mCursor = db.query(
+        fun findBy(selection: String): Theme? {
+            val mCursor = DSH.db().query(
                 ThemeContract.ThemeTable.TABLE_NAME,
                 null,
                 selection,
@@ -61,14 +60,14 @@ class Theme : TermeBase() {
             return theme
         }
 
-        fun find(db: SQLiteDatabase, id: Int): Theme? {
+        fun findByDistId(id: Int): Theme? {
             val selection = ThemeContract.ThemeTable.COLUMN_NAME_DIST_ID + " = " + id
-            return findBy(db, selection)
+            return findBy(selection)
         }
 
-        fun findMaxDateUpdate(db: SQLiteDatabase, langue: String): String {
+        fun findMaxDateUpdate(langue: String): String {
             val cursor =
-                db.query(
+                DSH.db().query(
                     ThemeContract.ThemeTable.TABLE_NAME,
                     arrayOf("MAX(${ThemeContract.ThemeTable.COLUMN_NAME_DATE_MAJ}) AS MAX"),
                     ThemeContract.ThemeTable.COLUMN_NAME_LANGUE_ID + " = ?",
@@ -81,10 +80,10 @@ class Theme : TermeBase() {
             return data ?: ""
         }
 
-        fun where(db: SQLiteDatabase, selection: String): Cursor {
+        fun where(selection: String): Cursor {
             val mCursor: Cursor
             val sortOrder = ThemeContract.ThemeTable.COLUMN_NAME_NUMERO + " ASC"
-            mCursor = db.query(
+            mCursor = DSH.db().query(
                 ThemeContract.ThemeTable.TABLE_NAME,
                 null,
                 selection,
@@ -98,7 +97,6 @@ class Theme : TermeBase() {
 
         fun majBase(
             table: JSONArray,
-            db: SQLiteDatabase,
             langue: String,
             date_maj: String
         ): Triple<Int, Int, Int> {
@@ -110,7 +108,7 @@ class Theme : TermeBase() {
                 val distId = themeJson.getInt(0)
                 val supp = themeJson.getString(3)
                 if (supp === "t") {
-                    db.execSQL(
+                    DSH.db().execSQL(
                         "DELETE FROM " + ThemeContract.ThemeTable.TABLE_NAME +
                                 " WHERE " + ThemeContract.ThemeTable.COLUMN_NAME_LANGUE_ID + " = \"" + langue + "\" AND " +
                                 ThemeContract.ThemeTable.COLUMN_NAME_DIST_ID + " = " + distId
@@ -120,7 +118,7 @@ class Theme : TermeBase() {
                     val selection =
                         ThemeContract.ThemeTable.COLUMN_NAME_LANGUE_ID + " = \"" + langue + "\"" +
                                 " AND " + ThemeContract.ThemeTable.COLUMN_NAME_DIST_ID + " = " + distId
-                    var theme = findBy(db, selection)
+                    var theme = findBy(selection)
                     if (theme == null) {
                         theme = Theme()
                         theme.distId = distId
@@ -132,7 +130,7 @@ class Theme : TermeBase() {
                     theme.numero = themeJson.getInt(1)
                     theme.langue = themeJson.getString(2)
                     theme.dateMaj = date_maj
-                    theme.save(db)
+                    theme.save()
                 }
             }
             return Triple(nbPlus, nbMoins, nbModif)

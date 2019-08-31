@@ -2,7 +2,6 @@ package com.jmarzin.jmlangues
 
 import android.content.ContentValues
 import android.database.Cursor
-import android.database.sqlite.SQLiteDatabase
 import org.json.JSONArray
 
 /**
@@ -11,7 +10,7 @@ import org.json.JSONArray
 class FormeType : TermeBase() {
     var numero: Int = 0
 
-    fun save(db: SQLiteDatabase) {
+    fun save() {
         val values = ContentValues()
 
         values.put(FormeTypeContract.FormeTypeTable.COLUMN_NAME_DATE_MAJ, dateMaj)
@@ -22,16 +21,16 @@ class FormeType : TermeBase() {
 
         if (this.id > 0) {
             val selection = FormeTypeContract.FormeTypeTable.COLUMN_NAME_ID + " = " + id
-            db.update(FormeTypeContract.FormeTypeTable.TABLE_NAME, values, selection, null)
+            DSH.db().update(FormeTypeContract.FormeTypeTable.TABLE_NAME, values, selection, null)
         } else {
-            this.id = db.insert(FormeTypeContract.FormeTypeTable.TABLE_NAME, null, values).toInt()
+            this.id = DSH.db().insert(FormeTypeContract.FormeTypeTable.TABLE_NAME, null, values).toInt()
         }
     }
 
     companion object {
 
-        private fun findBy(db: SQLiteDatabase, selection: String): FormeType? {
-            val mCursor = db.query(
+        private fun findBy(selection: String): FormeType? {
+            val mCursor = DSH.db().query(
                 FormeTypeContract.FormeTypeTable.TABLE_NAME,
                 null,
                 selection,
@@ -61,13 +60,13 @@ class FormeType : TermeBase() {
             return formeType
         }
 
-        fun findByNumber(db: SQLiteDatabase, id: Int): FormeType? {
-            return findBy(db, FormeTypeContract.FormeTypeTable.COLUMN_NAME_NUMERO + " = " + id)
+        fun findByNumber(id: Int): FormeType? {
+            return findBy(FormeTypeContract.FormeTypeTable.COLUMN_NAME_NUMERO + " = " + id)
         }
 
-        fun findMaxDateUpdate(db: SQLiteDatabase, langue: String): String {
+        fun findMaxDateUpdate(langue: String): String {
             val cursor =
-                db.query(
+                DSH.db().query(
                     FormeTypeContract.FormeTypeTable.TABLE_NAME,
                     arrayOf("MAX(${FormeTypeContract.FormeTypeTable.COLUMN_NAME_DATE_MAJ}) AS MAX"),
                     FormeTypeContract.FormeTypeTable.COLUMN_NAME_LANGUE_ID + " = ?",
@@ -80,9 +79,9 @@ class FormeType : TermeBase() {
             return data ?: ""
         }
 
-        fun where(db: SQLiteDatabase, selection: String): Cursor {
+        fun where(selection: String): Cursor {
             val sortOrder = FormeTypeContract.FormeTypeTable.COLUMN_NAME_NUMERO + " ASC"
-            return db.query(
+            return DSH.db().query(
                 FormeTypeContract.FormeTypeTable.TABLE_NAME,
                 null,
                 selection,
@@ -95,7 +94,6 @@ class FormeType : TermeBase() {
 
         fun majBase(
             table: JSONArray,
-            db: SQLiteDatabase,
             langue: String,
             date_maj: String
         ): Triple<Int, Int, Int> {
@@ -107,7 +105,7 @@ class FormeType : TermeBase() {
                 val distId = formeTypeJson.getInt(0)
                 val supp = formeTypeJson.getString(3)
                 if (supp === "t") {
-                    db.execSQL(
+                    DSH.db().execSQL(
                         "DELETE FROM " + FormeTypeContract.FormeTypeTable.TABLE_NAME +
                                 " WHERE " + FormeTypeContract.FormeTypeTable.COLUMN_NAME_LANGUE_ID + " = \"" + langue + "\" AND " +
                                 FormeTypeContract.FormeTypeTable.COLUMN_NAME_DIST_ID + " = " + distId
@@ -117,7 +115,7 @@ class FormeType : TermeBase() {
                     val selection =
                         FormeTypeContract.FormeTypeTable.COLUMN_NAME_LANGUE_ID + " = \"" + langue + "\"" +
                                 " AND " + FormeTypeContract.FormeTypeTable.COLUMN_NAME_DIST_ID + " = " + distId
-                    var formeType = findBy(db, selection)
+                    var formeType = findBy(selection)
                     if (formeType == null) {
                         formeType = FormeType()
                         formeType.distId = distId
@@ -129,7 +127,7 @@ class FormeType : TermeBase() {
                     formeType.numero = formeTypeJson.getInt(2)
                     formeType.langue = formeTypeJson.getString(1)
                     formeType.dateMaj = date_maj
-                    formeType.save(db)
+                    formeType.save()
                 }
             }
             return Triple(nbPlus, nbMoins, nbModif)

@@ -4,34 +4,25 @@ import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.database.Cursor
-import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.SearchView
 import android.view.Menu
-import android.view.MenuItem
 import android.widget.AdapterView
 import android.widget.ListView
 import android.widget.SimpleCursorAdapter
-import java.util.*
 
 
-class FormesActivity : AppCompatActivity() {
+class FormesActivity : MesActivites() {
 
-    private var db: SQLiteDatabase? = null
-    private var session: Session? = null
+    var localMenu: Menu? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_formes)
-        val dbManager = MyDbHelper(baseContext)
-        db = dbManager.writableDatabase
-        val selection = SessionContract.SessionTable.COLUMN_NAME_DERNIERE + " = 1"
-        session = Session.findBy(db, selection)
 
         setSupportActionBar(findViewById(R.id.my_toolbar))
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setIcon(Utilitaires.drapeau(session!!.langue))
+
+        supportActionBar?.setIcon(DSH.session.drapeau())
         handleIntent(intent)
     }
 
@@ -47,27 +38,22 @@ class FormesActivity : AppCompatActivity() {
             this.title = "  Formes trouvées"
             intent.getStringExtra(SearchManager.QUERY)?.also { query ->
                 val selection =
-                    FormeContract.FormeTable.COLUMN_NAME_LANGUE_ID + " = \"" + session!!.langue!!.substring(
-                        0,
-                        2
-                    ).toLowerCase(Locale.FRANCE) + "\"" +
+                    FormeContract.FormeTable.COLUMN_NAME_LANGUE_ID + " = \"" + DSH.session.langueId() + "\"" +
                             " AND " + FormeContract.FormeTable.COLUMN_NAME_LANGUE + " LIKE \"" + query + "\""
-                mCursor = Mot.where(db!!, selection)
+                mCursor = Forme.where(selection)
+                val menuItem = localMenu!!.findItem(R.id.action_search)
+                menuItem.collapseActionView()
             }
         } else {
             this.title = "  Formes verbales"
             mCursor = when {
-                session!!.verbeId > 0 -> Forme.where(
-                    db!!,
-                    FormeContract.FormeTable.COLUMN_NAME_VERBE_ID + " = " + session!!.verbeId + " and " +
-                            FormeContract.FormeTable.COLUMN_NAME_LANGUE_ID + " = \"" + session!!.langue!!.substring(
-                        0, 2).toLowerCase(Locale.FRANCE) + "\"")
-                session!!.formeTypeNumero > 0 -> Forme.where(
-                    db!!,
-                    FormeContract.FormeTable.COLUMN_NAME_FORME_TYPE_NUMERO + " = " + session!!.formeTypeNumero + " and " +
-                            MotContract.MotTable.COLUMN_NAME_LANGUE_ID + " = \"" + session!!.langue!!.substring(
-                        0, 2).toLowerCase(Locale.FRANCE) + "\"")
-                else -> Forme.where(db!!, Utilitaires.getSelection(session!!, "Formes"))
+                DSH.session.verbeId > 0 -> Forme.where(
+                    FormeContract.FormeTable.COLUMN_NAME_VERBE_ID + " = " + DSH.session.verbeId + " and " +
+                            FormeContract.FormeTable.COLUMN_NAME_LANGUE_ID + " = \"" + DSH.session.langueId() + "\"")
+                DSH.session.formeTypeNumero > 0 -> Forme.where(
+                    FormeContract.FormeTable.COLUMN_NAME_FORME_TYPE_NUMERO + " = " + DSH.session.formeTypeNumero + " and " +
+                            MotContract.MotTable.COLUMN_NAME_LANGUE_ID + " = \"" + DSH.session.langueId() + "\"")
+                else -> Forme.selection()
             }
         }
 
@@ -84,24 +70,15 @@ class FormesActivity : AppCompatActivity() {
 
         listView.onItemClickListener = AdapterView.OnItemClickListener { _, _, pos, _ ->
             mCursor!!.moveToPosition(pos)
-            session!!.formeId = mCursor!!.getInt(mCursor!!.getColumnIndexOrThrow(FormeContract.FormeTable.COLUMN_NAME_ID))
+            DSH.session.formeId =
+                mCursor!!.getInt(mCursor!!.getColumnIndexOrThrow(FormeContract.FormeTable.COLUMN_NAME_ID))
             startActivity(Intent(baseContext, FormeActivity::class.java))
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        val selection = SessionContract.SessionTable.COLUMN_NAME_DERNIERE + " = 1"
-        session = Session.findBy(db, selection)
-    }
-
-    override fun onPause() {
-        session!!.save(db)
-        super.onPause()
-    }
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_autres, menu)
+        localMenu = menu
+        super.onCreateOptionsMenu(menu)
         menu.findItem(R.id.action_formes).isEnabled = false
         menu.findItem(R.id.action_search).isVisible = true
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
@@ -110,10 +87,5 @@ class FormesActivity : AppCompatActivity() {
             setIconifiedByDefault(false)
         }
         return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        Utilitaires.traiteMenu(item, this, session!!)
-        return super.onOptionsItemSelected(item)
     }
 }

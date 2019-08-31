@@ -1,44 +1,30 @@
 package com.jmarzin.jmlangues
 
-import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
-import android.support.v7.app.AppCompatActivity
-import android.view.Menu
-import android.view.MenuItem
 import android.widget.TextView
 import com.jmarzin.jmlangues.R.string.en
-import java.util.*
 
 
-class FormeActivity : AppCompatActivity() {
+class FormeActivity : MesActivites() {
 
-    private var db: SQLiteDatabase? = null
-    private var session: Session? = null
     private var ttobj: TextToSpeech? = null
-    private var locale: Locale? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_forme)
-        val dbManager = MyDbHelper(baseContext)
-        db = dbManager.writableDatabase
-        val selection = SessionContract.SessionTable.COLUMN_NAME_DERNIERE + " = 1"
-        session = Session.findBy(db, selection)
 
         setSupportActionBar(findViewById(R.id.my_toolbar))
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setIcon(Utilitaires.drapeau(session!!.langue))
 
-        locale = Utilitaires.setLocale(session!!.langue!!)
+        supportActionBar?.setIcon(DSH.session.drapeau())
 
         this.title = "  Forme verbale"
-        val forme = Forme.find(db!!, session!!.formeId)
+        val forme = Forme.find(DSH.session.formeId)
 
         val tId = findViewById<TextView>(R.id.t_id)
-        tId.text = session!!.formeId.toString()
+        tId.text = DSH.session.formeId.toString()
         val lLangue = findViewById<TextView>(R.id.l_langue)
-        lLangue.text = getString(en, session!!.langue)
+        lLangue.text = getString(en, DSH.session.langue)
 
         if (forme != null) {
 
@@ -81,34 +67,15 @@ class FormeActivity : AppCompatActivity() {
                 applicationContext,
                 TextToSpeech.OnInitListener { status ->
                     if (status != TextToSpeech.ERROR) {
-                        if (locale != null) {
-                            ttobj!!.language = locale
+                        if (DSH.session.locale() != null) {
+                            ttobj!!.language = DSH.session.locale()
+                            @Suppress("DEPRECATION")
                             ttobj!!.speak(forme.langue, TextToSpeech.QUEUE_ADD, null)
                         }
                     }
                 }
             )
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        session = Session.findBy(db, SessionContract.SessionTable.COLUMN_NAME_DERNIERE + " = 1")
-    }
-
-    override fun onPause() {
-        session!!.save(db)
-        super.onPause()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_autres, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        Utilitaires.traiteMenu(item, this, session!!)
-        return super.onOptionsItemSelected(item)
     }
 }
 

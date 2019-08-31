@@ -1,7 +1,6 @@
 package com.jmarzin.jmlangues
 
 import android.content.ContentValues
-import android.database.sqlite.SQLiteDatabase
 import java.util.*
 
 /**
@@ -30,7 +29,7 @@ class Session {
     var formeTypeNumero: Int = 0
     var liste = ArrayList<Int>(0)
 
-    fun save(db: SQLiteDatabase?) {
+    fun save() {
         val values = ContentValues()
         values.put(SessionContract.SessionTable.COLUMN_NAME_LANGUE, this.langue)
         values.put(SessionContract.SessionTable.COLUMN_NAME_DERNIERE, this.derniereSession)
@@ -58,9 +57,9 @@ class Session {
 
         if (this.id > 0) {
             val selection = SessionContract.SessionTable.COLUMN_NAME_ID + " = " + id
-            db!!.update(SessionContract.SessionTable.TABLE_NAME, values, selection, null)
+            DSH.db().update(SessionContract.SessionTable.TABLE_NAME, values, selection, null)
         } else {
-            this.id = db!!.insert(SessionContract.SessionTable.TABLE_NAME, null, values).toInt()
+            this.id = DSH.db().insert(SessionContract.SessionTable.TABLE_NAME, null, values).toInt()
         }
     }
 
@@ -75,6 +74,81 @@ class Session {
     fun getNbTermesListe(): Int {
         val uniqueListe = HashSet<Int>(this.liste)
         return uniqueListe.size
+    }
+
+    fun langueId(): String {
+        if (id < 1) {
+            return ""
+        }
+        return langue!!.substring(
+            0,
+            2
+        ).toLowerCase(Locale.FRANCE)
+    }
+
+    fun drapeau(): Int {
+        return when (langue) {
+            "Italien" -> R.drawable.italien
+            "Anglais" -> R.drawable.anglais
+            "Espagnol" -> R.drawable.espagnol
+            "Occitan" -> R.drawable.occitan
+            "Portugais" -> R.drawable.portugais
+            "Allemand" -> R.drawable.allemand
+            else -> R.drawable.lingvo
+        }
+    }
+
+    fun locale(): Locale? {
+        return when (langue) {
+            "Italien" -> Locale.ITALIAN
+            "Anglais" -> Locale.ENGLISH
+            "Espagnol" -> Locale("es", "ES")
+            "Occitan" -> null
+            "Portugais" -> Locale("pt", "PT")
+            "Allemand" -> Locale.GERMANY
+            else -> null
+        }
+    }
+
+    fun creerListe() {
+
+        liste = ArrayList()
+        if (modeRevision.equals("Vocabulaire") || modeRevision.equals("Mixte")) {
+            val c = Mot.selection()
+            val id = MotContract.MotTable.COLUMN_NAME_ID
+            val poids = MotContract.MotTable.COLUMN_NAME_POIDS
+            for (i in 0 until c.count) {
+                c.moveToNext()
+                val element = c.getInt(c.getColumnIndexOrThrow(id))
+                val nb = c.getInt(c.getColumnIndexOrThrow(poids))
+                for (j in 1..nb) {
+                    DSH.session.liste.add(element)
+                }
+            }
+            c.close()
+        }
+        if (modeRevision.equals("Conjugaisons") || modeRevision.equals("Mixte")) {
+            val c = Forme.selection()
+            val id = FormeContract.FormeTable.COLUMN_NAME_ID
+            val poids = FormeContract.FormeTable.COLUMN_NAME_POIDS
+            for (i in 0 until c.count) {
+                c.moveToNext()
+                val element = c.getInt(c.getColumnIndexOrThrow(id))
+                val nb = c.getInt(c.getColumnIndexOrThrow(poids))
+                for (j in 1..nb) {
+                    DSH.session.liste.add(-element)
+                }
+            }
+            c.close()
+        }
+    }
+
+    fun initRevision() {
+        if (modeRevision == null) {
+            modeRevision = "Vocabulaire"
+            creerListe()
+            save()
+        }
     }
 
     companion object {
@@ -112,8 +186,8 @@ class Session {
             }
         }
 
-        fun findBy(db: SQLiteDatabase?, selection: String): Session {
-            val mCursor = db!!.query(
+        fun findBy(selection: String): Session {
+            val mCursor = DSH.db().query(
                 SessionContract.SessionTable.TABLE_NAME,
                 null,
                 selection,

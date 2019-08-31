@@ -7,5 +7,6 @@
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
         android:layout_gravity="center"
+        app:subtitleTextAppearance="@style/ToolbarSubtitleAppearance"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>

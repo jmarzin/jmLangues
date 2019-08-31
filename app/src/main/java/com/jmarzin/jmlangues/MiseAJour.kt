@@ -28,8 +28,6 @@ class MiseAJour : IntentService("MiseAJour") {
         val langue = intent!!.getStringExtra("langue").toLowerCase(Locale.FRANCE)
         val langueId = langue.substring(0, 2)
         val debutHttpNouv = "http://languesapi.jmarzin.fr/" + langue.substring(0, 2) + "/api/"
-        val dbManager = MyDbHelper(baseContext)
-        val db = dbManager.writableDatabase
         val queue = Volley.newRequestQueue(this)
 
         fun miseAJourObjets(
@@ -58,26 +56,24 @@ class MiseAJour : IntentService("MiseAJour") {
         val stringRequest = StringRequest(Request.Method.GET, url1,
             Response.Listener { response ->
                 miseAJourObjets("thèmes", "${debutHttpNouv}v2/themes?date=",
-                    { Theme.findMaxDateUpdate(db, langueId) },
-                    { t: JSONArray -> Theme.majBase(t, db, langueId, response) })
+                    { Theme.findMaxDateUpdate(langueId) },
+                    { t: JSONArray -> Theme.majBase(t, langueId, response) })
                 miseAJourObjets("mots", "${debutHttpNouv}v4/mots?date=",
-                    { Mot.findMaxDateUpdate(db, langueId) },
-                    { t: JSONArray -> Mot.majBase(t, db, langueId, response) })
+                    { Mot.findMaxDateUpdate(langueId) },
+                    { t: JSONArray -> Mot.majBase(t, langueId, response) })
                 miseAJourObjets("verbes", "${debutHttpNouv}v2/verbes?date=",
-                    { Verbe.findMaxDateUpdate(db, langueId) },
-                    { t: JSONArray -> Verbe.majBase(t, db, langueId, response) })
+                    { Verbe.findMaxDateUpdate(langueId) },
+                    { t: JSONArray -> Verbe.majBase(t, langueId, response) })
                 miseAJourObjets("temps", "${debutHttpNouv}v1/formestypes?date=",
-                    { FormeType.findMaxDateUpdate(db, langueId) },
-                    { t: JSONArray -> FormeType.majBase(t, db, langueId, response) })
+                    { FormeType.findMaxDateUpdate(langueId) },
+                    { t: JSONArray -> FormeType.majBase(t, langueId, response) })
                 miseAJourObjets("conjugaisons", "${debutHttpNouv}v2/formes?date=",
-                    { Forme.findMaxDateUpdate(db, langueId) },
-                    { t: JSONArray -> Forme.majBase(t, db, langueId, response) })
+                    { Forme.findMaxDateUpdate(langueId) },
+                    { t: JSONArray -> Forme.majBase(t, langueId, response) })
             },
             Response.ErrorListener {
                 envoiMessage("Problème réseau : mise à jour impossible")
             })
         queue.add(stringRequest)
-
-
     }
 }

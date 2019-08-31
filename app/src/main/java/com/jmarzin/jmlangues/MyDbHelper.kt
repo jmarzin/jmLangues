@@ -155,9 +155,6 @@ class MyDbHelper(context: Context) :
 
         private const val SQL_DELETE_STATS = "DROP TABLE IF EXISTS " + StatsContract.StatsTable.TABLE_NAME
 
-        const val TABLE_NAME = "sessions"
-        const val COLUMN_NAME_LANGUE = "langue"
-        const val COLUMN_NAME_DERNIERE = "derniere"
     }
 }
 

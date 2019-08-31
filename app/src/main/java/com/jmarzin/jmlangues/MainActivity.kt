@@ -16,8 +16,7 @@ import android.widget.Toast
 
 class MainActivity : AppCompatActivity() {
 
-    var db: SQLiteDatabase? = null
-    private var session = Session()
+    var db2: SQLiteDatabase? = null
     private var dejaMaj = false
     private var receiver: BroadcastReceiver? = null
 
@@ -26,8 +25,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         this.title = "jmLangues"
         dejaMaj = false
-        val dbManager = MyDbHelper(baseContext)
-        db = dbManager.writableDatabase
+
+        DSH.ouvreSession(applicationContext)
         setContentView(R.layout.activity_main)
         receiver = RetourServiceMaj()
         val filter = IntentFilter(ACTION_RETOUR_MAJ)
@@ -36,22 +35,19 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        session = Session.findBy(db, SessionContract.SessionTable.COLUMN_NAME_DERNIERE + " = 1")
-        if (session.id < 1) {
-            session.langue = getString(R.string.titre_langue)
-        }
         val mTexteLangue = findViewById<TextView>(R.id.t_langue)
-        mTexteLangue.text = session.langue
-        session.razCursor()
+        mTexteLangue.text = DSH.session.langue
+        DSH.session.razCursor()
     }
 
     override fun onPause() {
-        session.save(db)
+        DSH.session.save()
         super.onPause()
     }
 
     override fun onDestroy() {
         this.unregisterReceiver(receiver)
+        DSH.fermeSession()
         super.onDestroy()
     }
 
@@ -67,14 +63,14 @@ class MainActivity : AppCompatActivity() {
         if (mTexteLangue.text == langue) {
             return
         } else {
-            session.derniereSession = 0
-            session.save(db)
+            DSH.session.derniereSession = 0
+            DSH.session.save()
             val selection =
                 SessionContract.SessionTable.COLUMN_NAME_LANGUE + " = \"" + langue + "\""
-            session = Session.findBy(db, selection)
-            if (session.id == 0) {
-                session = Session()
-                session.langue = langue
+            DSH.session = Session.findBy(selection)
+            if (DSH.session.id == 0) {
+                DSH.session = Session()
+                DSH.session.langue = langue
             }
             dejaMaj = false
             mTexteLangue.text = langue
@@ -113,7 +109,7 @@ class MainActivity : AppCompatActivity() {
             val networkInfo = connMgr.activeNetworkInfo
             if (networkInfo != null && networkInfo.isConnected) {
                 val intentService = Intent(baseContext, MiseAJour::class.java)
-                intentService.putExtra("langue", session.langue)
+                intentService.putExtra("langue", DSH.session.langue)
                 startService(intentService)
             } else {
                 afficheMessage(getString(R.string.pasDeReseau))
@@ -157,9 +153,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun clickQuitter(view: View) {
-        if (session.conserveStats == 0) {
-            session.nbQuestions = 0
-            session.nbErreurs = 0
+        if (DSH.session.conserveStats == 0) {
+            DSH.session.nbQuestions = 0
+            DSH.session.nbErreurs = 0
         }
         dejaMaj = false
         finish()

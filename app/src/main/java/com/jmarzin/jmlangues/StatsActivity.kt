@@ -1,11 +1,8 @@
 package com.jmarzin.jmlangues
 
-import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.Menu
-import android.view.MenuItem
 import android.widget.ListView
 import android.widget.SimpleCursorAdapter
 import com.jjoe64.graphview.GraphView
@@ -18,27 +15,19 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.max
 
-class StatsActivity : AppCompatActivity() {
-
-    var db: SQLiteDatabase? = null
-    var session = Session()
+class StatsActivity : MesActivites() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_stats)
 
-        val dbManager = MyDbHelper(baseContext)
-        db = dbManager.writableDatabase
-        session = Session.findBy(db, SessionContract.SessionTable.COLUMN_NAME_DERNIERE + " = 1")
-
         setSupportActionBar(findViewById(R.id.my_toolbar))
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setIcon(Utilitaires.drapeau(session.langue))
+        supportActionBar?.setIcon(DSH.session.drapeau())
 
         this.title = "  Statistiques"
 
         val mCursor =
-            Stats.where(db!!, "langue_id = \"" + session.langue!!.substring(0, 2).toLowerCase(Locale.FRANCE) + "\"")
+            Stats.where("langue_id = \"" + DSH.session.langueId() + "\"")
 
         val graph = findViewById<GraphView>(R.id.graph)
 
@@ -47,7 +36,7 @@ class StatsActivity : AppCompatActivity() {
         val erreurs = LineGraphSeries<DataPoint>()
         erreurs.color = Color.RED
         var point: DataPoint
-        val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.FRANCE)
+        var formatter = SimpleDateFormat("yyyy-MM-d", Locale.FRANCE)
         var datedebut: Date? = null
         var datefin: Date? = null
         var dateprec: Date? = null
@@ -97,13 +86,15 @@ class StatsActivity : AppCompatActivity() {
         }
         graph.addSeries(questions)
         graph.addSeries(erreurs)
+        formatter = SimpleDateFormat("dd/MM", Locale.FRANCE)
         graph.gridLabelRenderer.labelFormatter = DateAsXAxisLabelFormatter(baseContext, formatter)
 
         val staticLabelsFormatter = StaticLabelsFormatter(graph)
-        if (datedebut != null && datefin != null) {
+        if (datedebut != null && datefin == null) datefin = Date(datedebut.time.plus(24 * 3600000))
+        if (datedebut != null) {
             graph.viewport.isXAxisBoundsManual = true
             graph.viewport.setMinX(datedebut.time.toDouble())
-            graph.viewport.setMaxX(datefin.time.toDouble())
+            graph.viewport.setMaxX(datefin!!.time.toDouble())
             if (nbpoints % 2 == 1) {
                 staticLabelsFormatter.setHorizontalLabels(
                     arrayOf(
@@ -178,20 +169,9 @@ class StatsActivity : AppCompatActivity() {
         listView.adapter = adapter
     }
 
-    override fun onPause() {
-        session.save(db)
-        super.onPause()
-    }
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_autres, menu)
+        super.onCreateOptionsMenu(menu)
         menu.findItem(R.id.action_statistiques).isEnabled = false
         return true
     }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        Utilitaires.traiteMenu(item, this, session)
-        return super.onOptionsItemSelected(item)
-    }
-
 }

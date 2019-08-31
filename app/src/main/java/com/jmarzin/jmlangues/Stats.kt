@@ -2,7 +2,6 @@ package com.jmarzin.jmlangues
 
 import android.content.ContentValues
 import android.database.Cursor
-import android.database.sqlite.SQLiteDatabase
 
 /**
  * Created by jacques on 26/01/15.
@@ -17,7 +16,7 @@ class Stats {
     var nbQuestionsFormes = 0
     var nbErreursFormes = 0
 
-    fun save(db: SQLiteDatabase) {
+    fun save() {
         val values = ContentValues()
         values.put(StatsContract.StatsTable.COLUMN_NAME_LANGUE_ID, langueId)
         values.put(StatsContract.StatsTable.COLUMN_NAME_DATE, dateRev)
@@ -28,16 +27,16 @@ class Stats {
 
         if (this.id > 0) {
             val selection = StatsContract.StatsTable.COLUMN_NAME_ID + " = " + id
-            db.update(StatsContract.StatsTable.TABLE_NAME, values, selection, null)
+            DSH.db().update(StatsContract.StatsTable.TABLE_NAME, values, selection, null)
         } else {
-            this.id = db.insert(StatsContract.StatsTable.TABLE_NAME, null, values).toInt()
+            this.id = DSH.db().insert(StatsContract.StatsTable.TABLE_NAME, null, values).toInt()
         }
     }
 
     companion object {
 
-        fun findBy(db: SQLiteDatabase, selection: String): Stats? {
-            val mCursor = db.query(
+        fun findBy(selection: String): Stats? {
+            val mCursor = DSH.db().query(
                 StatsContract.StatsTable.TABLE_NAME,
                 null,
                 selection,
@@ -69,9 +68,9 @@ class Stats {
             return stats
         }
 
-        fun where(db: SQLiteDatabase, selection: String): Cursor {
+        fun where(selection: String): Cursor {
             val sortOrder = StatsContract.StatsTable.COLUMN_NAME_DATE + " ASC"
-            return db.query(
+            return DSH.db().query(
                 StatsContract.StatsTable.TABLE_NAME,
                 null,
                 selection,

@@ -1,44 +1,28 @@
 package com.jmarzin.jmlangues
 
-import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
-import android.support.v7.app.AppCompatActivity
-import android.view.Menu
-import android.view.MenuItem
 import android.widget.TextView
-import java.util.*
 
 
-class MotActivity : AppCompatActivity() {
+class MotActivity : MesActivites() {
 
-    private var db: SQLiteDatabase? = null
-    private var session: Session? = null
     private var ttobj: TextToSpeech? = null
-    private var locale: Locale? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mot)
 
-        val dbManager = MyDbHelper(baseContext)
-        db = dbManager.writableDatabase
-        val selection = SessionContract.SessionTable.COLUMN_NAME_DERNIERE + " = 1"
-        session = Session.findBy(db, selection)
-
         setSupportActionBar(findViewById(R.id.my_toolbar))
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setIcon(Utilitaires.drapeau(session!!.langue))
-
-        locale = Utilitaires.setLocale(session!!.langue!!)
+        supportActionBar?.setIcon(DSH.session.drapeau())
 
         this.title = "  Mot"
-        val mot = Mot.find(db!!, session!!.motId)
+        val mot = Mot.find(DSH.session.motId)
 
         val tId = findViewById<TextView>(R.id.t_id)
-        tId.text = session!!.motId.toString()
+        tId.text = DSH.session.motId.toString()
         val lLangue = findViewById<TextView>(R.id.l_langue)
-        lLangue.text = getString(R.string.en, session!!.langue)
+        lLangue.text = getString(R.string.en, DSH.session.langue)
 
         if (mot != null) {
 
@@ -47,7 +31,7 @@ class MotActivity : AppCompatActivity() {
 
             val tThemeLangue =
                 findViewById<TextView>(R.id.t_theme_langue)
-            if (mot.theme.id == 0) {
+            if (mot.theme.id > 0) {
                 tThemeLangue.text = mot.theme.langue
             } else {
                 tThemeLangue.text = ""
@@ -89,39 +73,15 @@ class MotActivity : AppCompatActivity() {
                 applicationContext,
                 TextToSpeech.OnInitListener { status ->
                     if (status != TextToSpeech.ERROR) {
-                        if (locale != null) {
-                            ttobj!!.language = locale
-                            ttobj!!.speak(mot.langue, TextToSpeech.QUEUE_ADD, null)
+                        if (DSH.session.locale() != null) {
+                            ttobj!!.language = DSH.session.locale()
+                            @Suppress("DEPRECATION")
+                            ttobj!!.speak(Mot.eclate(mot.langue, true), TextToSpeech.QUEUE_ADD, null)
                         }
                     }
                 }
             )
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        val selection = SessionContract.SessionTable.COLUMN_NAME_DERNIERE + " = 1"
-        session = Session.findBy(db, selection)
-    }
-
-    override fun onPause() {
-        session!!.save(db)
-        if (ttobj != null) {
-            ttobj!!.stop()
-            ttobj!!.shutdown()
-        }
-        super.onPause()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_autres, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        Utilitaires.traiteMenu(item, this, session!!)
-        return super.onOptionsItemSelected(item)
     }
 }
 

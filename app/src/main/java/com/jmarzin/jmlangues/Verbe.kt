@@ -2,7 +2,6 @@ package com.jmarzin.jmlangues
 
 import android.content.ContentValues
 import android.database.Cursor
-import android.database.sqlite.SQLiteDatabase
 import org.json.JSONArray
 
 /**
@@ -10,7 +9,7 @@ import org.json.JSONArray
  */
 class Verbe : TermeBase() {
 
-    fun save(db: SQLiteDatabase) {
+    fun save() {
         val values = ContentValues()
 
         values.put(VerbeContract.VerbeTable.COLUMN_NAME_DATE_MAJ, dateMaj)
@@ -20,16 +19,16 @@ class Verbe : TermeBase() {
 
         if (this.id > 0) {
             val selection = VerbeContract.VerbeTable.COLUMN_NAME_ID + " = " + id
-            db.update(VerbeContract.VerbeTable.TABLE_NAME, values, selection, null)
+            DSH.db().update(VerbeContract.VerbeTable.TABLE_NAME, values, selection, null)
         } else {
-            this.id = db.insert(VerbeContract.VerbeTable.TABLE_NAME, null, values).toInt()
+            this.id = DSH.db().insert(VerbeContract.VerbeTable.TABLE_NAME, null, values).toInt()
         }
     }
 
     companion object {
 
-        private fun findBy(db: SQLiteDatabase, selection: String): Verbe? {
-            val mCursor = db.query(
+        private fun findBy(selection: String): Verbe? {
+            val mCursor = DSH.db().query(
                 VerbeContract.VerbeTable.TABLE_NAME,
                 null,
                 selection,
@@ -57,14 +56,14 @@ class Verbe : TermeBase() {
             return verbe
         }
 
-        fun find(db: SQLiteDatabase, id: Int): Verbe? {
-            val selection = VerbeContract.VerbeTable.COLUMN_NAME_ID + " = " + id
-            return findBy(db, selection)
+        fun findByDistId(id: Int): Verbe? {
+            val selection = VerbeContract.VerbeTable.COLUMN_NAME_DIST_ID + " = " + id
+            return findBy(selection)
         }
 
-        fun findMaxDateUpdate(db: SQLiteDatabase, langue: String): String {
+        fun findMaxDateUpdate(langue: String): String {
             val cursor =
-                db.query(
+                DSH.db().query(
                     VerbeContract.VerbeTable.TABLE_NAME,
                     arrayOf("MAX(${VerbeContract.VerbeTable.COLUMN_NAME_DATE_MAJ}) AS MAX"),
                     VerbeContract.VerbeTable.COLUMN_NAME_LANGUE_ID + " = ?",
@@ -77,10 +76,10 @@ class Verbe : TermeBase() {
             return data ?: ""
         }
 
-        fun where(db: SQLiteDatabase, selection: String): Cursor {
+        fun where(selection: String): Cursor {
             val mCursor: Cursor
             val sortOrder = VerbeContract.VerbeTable.COLUMN_NAME_LANGUE + " ASC"
-            mCursor = db.query(
+            mCursor = DSH.db().query(
                 VerbeContract.VerbeTable.TABLE_NAME,
                 null,
                 selection,
@@ -94,7 +93,6 @@ class Verbe : TermeBase() {
 
         fun majBase(
             table: JSONArray,
-            db: SQLiteDatabase,
             langue: String,
             date_maj: String
         ): Triple<Int, Int, Int> {
@@ -106,7 +104,7 @@ class Verbe : TermeBase() {
                 val distId = verbeJson.getInt(0)
                 val supp = verbeJson.getString(2)
                 if (supp === "t") {
-                    db.execSQL(
+                    DSH.db().execSQL(
                         "DELETE FROM " + VerbeContract.VerbeTable.TABLE_NAME +
                                 " WHERE " + VerbeContract.VerbeTable.COLUMN_NAME_LANGUE_ID + " = \"" + langue + "\" AND " +
                                 VerbeContract.VerbeTable.COLUMN_NAME_DIST_ID + " = " + distId
@@ -116,7 +114,7 @@ class Verbe : TermeBase() {
                     val selection =
                         VerbeContract.VerbeTable.COLUMN_NAME_LANGUE_ID + " = \"" + langue + "\"" +
                                 " AND " + VerbeContract.VerbeTable.COLUMN_NAME_DIST_ID + " = " + distId
-                    var verbe = findBy(db, selection)
+                    var verbe = findBy(selection)
                     if (verbe == null) {
                         verbe = Verbe()
                         verbe.distId = distId
@@ -127,7 +125,7 @@ class Verbe : TermeBase() {
                     }
                     verbe.langue = verbeJson.getString(1)
                     verbe.dateMaj = date_maj
-                    verbe.save(db)
+                    verbe.save()
                 }
             }
             return Triple(nbPlus, nbMoins, nbModif)

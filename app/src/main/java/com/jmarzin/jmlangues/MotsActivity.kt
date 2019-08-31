@@ -4,33 +4,24 @@ import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.database.Cursor
-import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.SearchView
 import android.view.Menu
-import android.view.MenuItem
 import android.widget.AdapterView
 import android.widget.ListView
 import android.widget.SimpleCursorAdapter
-import java.util.*
 
 
-class MotsActivity : AppCompatActivity() {
+class MotsActivity : MesActivites() {
 
-    private var db: SQLiteDatabase? = null
-    private var session: Session? = null
+    var localMenu: Menu? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mots)
-        val dbManager = MyDbHelper(baseContext)
-        db = dbManager.writableDatabase
-        session = Session.findBy(db, SessionContract.SessionTable.COLUMN_NAME_DERNIERE + " = 1")
 
         setSupportActionBar(findViewById(R.id.my_toolbar))
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setIcon(Utilitaires.drapeau(session!!.langue))
+        supportActionBar?.setIcon(DSH.session.drapeau())
         handleIntent(intent)
     }
 
@@ -45,28 +36,23 @@ class MotsActivity : AppCompatActivity() {
             this.title = "  Mots trouvés"
             intent.getStringExtra(SearchManager.QUERY)?.also { query ->
                 val selection =
-                    MotContract.MotTable.COLUMN_NAME_LANGUE_ID + " = \"" + session!!.langue!!.substring(
-                        0,
-                        2
-                    ).toLowerCase(Locale.FRANCE) + "\"" +
+                    MotContract.MotTable.COLUMN_NAME_LANGUE_ID + " = \"" + DSH.session.langueId() + "\"" +
                             " AND (" + MotContract.MotTable.COLUMN_NAME_FRANCAIS + " LIKE \"" + query + "\"" +
                             " OR " + MotContract.MotTable.COLUMN_NAME_LANGUE + " LIKE \"" + query + "\"" +
                             " OR " + MotContract.MotTable.COLUMN_NAME_MOT_DIRECTEUR + " LIKE \"" + query + "\")"
-                mCursor = Mot.where(db!!, selection)
+                mCursor = Mot.where(selection)
+                val menuItem = localMenu!!.findItem(R.id.action_search)
+                menuItem.collapseActionView()
             }
         } else {
             this.title = "  Mots"
-            mCursor = if (session!!.themeId > 0) {
+            mCursor = if (DSH.session.themeId > 0) {
                 Mot.where(
-                    db!!,
-                    MotContract.MotTable.COLUMN_NAME_THEME_ID + " = " + session!!.themeId + " and " +
-                            MotContract.MotTable.COLUMN_NAME_LANGUE_ID + " = \"" + session!!.langue!!.substring(
-                        0,
-                        2
-                    ).toLowerCase(Locale.FRANCE) + "\""
+                    MotContract.MotTable.COLUMN_NAME_THEME_ID + " = " + DSH.session.themeId + " and " +
+                            MotContract.MotTable.COLUMN_NAME_LANGUE_ID + " = \"" + DSH.session.langueId() + "\""
                 )
             } else {
-                Mot.where(db!!, Utilitaires.getSelection(session!!, "Mots"))
+                Mot.selection()
             }
         }
 
@@ -83,38 +69,21 @@ class MotsActivity : AppCompatActivity() {
 
         listView.onItemClickListener = AdapterView.OnItemClickListener {_ , _, pos, _ ->
             mCursor!!.moveToPosition(pos)
-            session!!.motId = mCursor!!.getInt(mCursor!!.getColumnIndexOrThrow(MotContract.MotTable.COLUMN_NAME_ID))
+            DSH.session.motId = mCursor!!.getInt(mCursor!!.getColumnIndexOrThrow(MotContract.MotTable.COLUMN_NAME_ID))
             startActivity(Intent(baseContext, MotActivity::class.java))
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        val selection = SessionContract.SessionTable.COLUMN_NAME_DERNIERE + " = 1"
-        session = Session.findBy(db, selection)
-    }
-
-    override fun onPause() {
-        session!!.save(db)
-        super.onPause()
-    }
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_autres, menu)
+        localMenu = menu
+        super.onCreateOptionsMenu(menu)
         menu.findItem(R.id.action_mots).isEnabled = false
         menu.findItem(R.id.action_search).isVisible = true
-        // Get the SearchView and set the searchable configuration
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
         (menu.findItem(R.id.action_search).actionView as SearchView).apply {
-            // Assumes current activity is the searchable activity
             setSearchableInfo(searchManager.getSearchableInfo(componentName))
-            setIconifiedByDefault(false) // Do not iconify the widget; expand it by default
+            setIconifiedByDefault(false)
         }
         return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        Utilitaires.traiteMenu(item, this, session!!)
-        return super.onOptionsItemSelected(item)
     }
 }
