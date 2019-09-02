@@ -119,7 +119,7 @@ class ParametrageActivity : MesActivites() {
         return true
     }
 
-    fun onChangeChoix(view: View?) {
+    fun onChangeChoix(@Suppress("UNUSED_PARAMETER") view: View?) {
         mRadioVocabulaire =
             findViewById(R.id.t_vocabulaire)
         mRadioConjugaisons = findViewById(R.id.t_conjugaisons)
@@ -141,19 +141,19 @@ class ParametrageActivity : MesActivites() {
         }
     }
 
-    fun onChangeConserveStats(view: View) = if (mtConservestats!!.isChecked) {
+    fun onChangeConserveStats(@Suppress("UNUSED_PARAMETER") view: View) = if (mtConservestats!!.isChecked) {
         DSH.session.conserveStats = 1
     } else {
         DSH.session.conserveStats = 0
     }
 
-    fun onChangeParleAuto(view: View) = if (mtParleauto!!.isChecked) {
+    fun onChangeParleAuto(@Suppress("UNUSED_PARAMETER") view: View) = if (mtParleauto!!.isChecked) {
         DSH.session.parleAuto = 1
     } else {
         DSH.session.parleAuto = 0
     }
 
-    fun onPrepareListe(view: View) {
+    fun onPrepareListe(@Suppress("UNUSED_PARAMETER") view: View) {
         if (mtPoidsmin!!.text.toString().isEmpty()) {
             mtPoidsmin!!.text = "0"
         }

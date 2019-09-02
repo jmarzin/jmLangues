@@ -14,7 +14,7 @@ import android.widget.SimpleCursorAdapter
 
 class MotsActivity : MesActivites() {
 
-    var localMenu: Menu? = null
+    private var localMenu: Menu? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

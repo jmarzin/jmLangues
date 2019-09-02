@@ -159,15 +159,13 @@ class Forme : ItemQuestionnable() {
             date.time = date.time - DSH.session.ageRev * 24 * 3600000
             val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.FRANCE)
             val dateRev = sdf.format(date)
-            val cond1: String
+            val cond1: String = FormeContract.FormeTable.COLUMN_NAME_LANGUE_ID + " = \"" + DSH.session.langueId() + "\""
             var cond2 = ""
             var cond3 = ""
             var cond4 = ""
             var cond5 = ""
-            var cond6 = ""
-                cond1 =
-                    FormeContract.FormeTable.COLUMN_NAME_LANGUE_ID + " = \"" + DSH.session.langueId() + "\""
-                if (DSH.session.ageRev != 0) cond2 =
+            val cond6 = ""
+            if (DSH.session.ageRev != 0) cond2 =
                     """ AND ${FormeContract.FormeTable.COLUMN_NAME_DATE_REV} <= "$dateRev""""
                 if (DSH.session.poidsMin > 1) cond3 =
                     """ AND ${FormeContract.FormeTable.COLUMN_NAME_POIDS} >= ${DSH.session.poidsMin}"""

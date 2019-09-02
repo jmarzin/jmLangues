@@ -123,7 +123,7 @@ class RevisionActivity : MesActivites() {
         }
     }
 
-    fun clickSpeaker(view: View) {
+    fun clickSpeaker(@Suppress("UNUSED_PARAMETER") view: View) {
         val aPrononcer = Mot.eclate(question!!.item!!.langue, true)
         @Suppress("DEPRECATION")
         ttobj!!.speak(aPrononcer, TextToSpeech.QUEUE_ADD, null)

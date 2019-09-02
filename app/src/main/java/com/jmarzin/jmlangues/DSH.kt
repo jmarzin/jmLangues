@@ -10,11 +10,8 @@ import android.database.sqlite.SQLiteDatabase
  */
 
 object DSH {
-    var db: SQLiteDatabase? = null
+    private var db: SQLiteDatabase? = null
     var session: Session = Session()
-
-    init {
-    }
 
     fun ouvreSession(context: Context) {
         val dbManager = MyDbHelper(context)

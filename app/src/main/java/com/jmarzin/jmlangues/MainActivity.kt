@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.database.sqlite.SQLiteDatabase
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -16,7 +15,6 @@ import android.widget.Toast
 
 class MainActivity : AppCompatActivity() {
 
-    var db2: SQLiteDatabase? = null
     private var dejaMaj = false
     private var receiver: BroadcastReceiver? = null
 
@@ -78,19 +76,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun clickDrapeauItalien(view: View) = changeLangue(getString(R.string.Italien))
+    fun clickDrapeauItalien(@Suppress("UNUSED_PARAMETER") view: View) = changeLangue(getString(R.string.Italien))
 
-    fun clickDrapeauAnglais(view: View) = changeLangue(getString(R.string.Anglais))
+    fun clickDrapeauAnglais(@Suppress("UNUSED_PARAMETER") view: View) = changeLangue(getString(R.string.Anglais))
 
-    fun clickDrapeauEspagnol(view: View) = changeLangue(getString(R.string.Espagnol))
+    fun clickDrapeauEspagnol(@Suppress("UNUSED_PARAMETER") view: View) = changeLangue(getString(R.string.Espagnol))
 
-    fun clickDrapeauPortugais(view: View) = changeLangue(getString(R.string.Portugais))
+    fun clickDrapeauPortugais(@Suppress("UNUSED_PARAMETER") view: View) = changeLangue(getString(R.string.Portugais))
 
-    fun clickDrapeauOccitan(view: View) = changeLangue(getString(R.string.Occitan))
+    fun clickDrapeauOccitan(@Suppress("UNUSED_PARAMETER") view: View) = changeLangue(getString(R.string.Occitan))
 
-    fun clickDrapeauLingvo(view: View) = changeLangue(getString(R.string.Lingvo))
+    fun clickDrapeauLingvo(@Suppress("UNUSED_PARAMETER") view: View) = changeLangue(getString(R.string.Lingvo))
 
-    fun clickDrapeauAllemand(view: View) = changeLangue(getString(R.string.Allemand))
+    fun clickDrapeauAllemand(@Suppress("UNUSED_PARAMETER") view: View) = changeLangue(getString(R.string.Allemand))
 
     private fun okLangue(): Boolean {
         return if (this.title == getString(R.string.titre_langue)) {
@@ -120,39 +118,39 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun clickThemes(view: View) {
+    fun clickThemes(@Suppress("UNUSED_PARAMETER") view: View) {
         if (okLangue()) lanceActivite(Intent(this, ThemesActivity::class.java))
     }
 
-    fun clickMots(view: View) {
+    fun clickMots(@Suppress("UNUSED_PARAMETER") view: View) {
         if (okLangue()) lanceActivite(Intent(this, MotsActivity::class.java))
     }
 
-    fun clickVerbes(view: View) {
+    fun clickVerbes(@Suppress("UNUSED_PARAMETER") view: View) {
         if (okLangue()) lanceActivite(Intent(this, VerbesActivity::class.java))
     }
 
-    fun clickFormesTypes(view: View) {
+    fun clickFormesTypes(@Suppress("UNUSED_PARAMETER") view: View) {
         if (okLangue()) lanceActivite(Intent(this, FormesTypesActivity::class.java))
     }
 
-    fun clickFormes(view: View) {
+    fun clickFormes(@Suppress("UNUSED_PARAMETER") view: View) {
         if (okLangue()) lanceActivite(Intent(this, FormesActivity::class.java))
     }
 
-    fun clickRevision(view: View) {
+    fun clickRevision(@Suppress("UNUSED_PARAMETER") view: View) {
         if (okLangue()) lanceActivite(Intent(this, RevisionActivity::class.java))
     }
 
-    fun clickStatistiques(view: View) {
+    fun clickStatistiques(@Suppress("UNUSED_PARAMETER") view: View) {
         if (okLangue()) lanceActivite(Intent(this, StatsActivity::class.java))
     }
 
-    fun clickParametrage(view: View) {
+    fun clickParametrage(@Suppress("UNUSED_PARAMETER") view: View) {
         if (okLangue()) lanceActivite(Intent(this, ParametrageActivity::class.java))
     }
 
-    fun clickQuitter(view: View) {
+    fun clickQuitter(@Suppress("UNUSED_PARAMETER") view: View) {
         if (DSH.session.conserveStats == 0) {
             DSH.session.nbQuestions = 0
             DSH.session.nbErreurs = 0

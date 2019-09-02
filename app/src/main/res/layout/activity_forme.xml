@@ -18,7 +18,6 @@
                 android:layout_height="fill_parent">
 
             <TextView
-                    android:id="@+id/l_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/l_id"
@@ -38,7 +37,6 @@
                 android:layout_height="fill_parent">
 
             <TextView
-                    android:id="@+id/l_langue_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/l_langue_id"
@@ -58,7 +56,6 @@
                 android:layout_height="fill_parent">
 
             <TextView
-                    android:id="@+id/l_verbe_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/l_verbe_id"
@@ -79,7 +76,6 @@
                 android:layout_height="fill_parent">
 
             <TextView
-                    android:id="@+id/l_forme_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/l_forme_id"
@@ -118,7 +114,6 @@
                 android:layout_height="fill_parent">
 
             <TextView
-                    android:id="@+id/l_date_rev"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/l_date_rev"
@@ -138,7 +133,6 @@
                 android:layout_height="fill_parent">
 
             <TextView
-                    android:id="@+id/l_poids"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/l_poids"
@@ -158,7 +152,6 @@
                 android:layout_height="fill_parent">
 
             <TextView
-                    android:id="@+id/l_nberr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/l_nberr"
@@ -178,7 +171,6 @@
                 android:layout_height="fill_parent">
 
             <TextView
-                    android:id="@+id/l_dist_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/l_dist_id"
@@ -198,7 +190,6 @@
                 android:layout_height="fill_parent">
 
             <TextView
-                    android:id="@+id/l_date_maj"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/l_date_maj"

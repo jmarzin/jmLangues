@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="10dp">
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp">
     <include layout="@layout/toolbar"/>
     <TableLayout
             android:layout_width="fill_parent"
@@ -17,15 +18,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="@string/l_id"
-                    android:id="@+id/l_id" />
+                    android:text="@string/l_id" />
 
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:id="@+id/t_id"
-                    android:paddingLeft="5dp" />
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"/>
         </TableRow>
 
         <TableRow
@@ -36,11 +37,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="@string/l_langue_id"
-                    android:id="@+id/l_langue_id" />
+                    android:text="@string/l_langue_id" />
 
             <TextView
-                    android:paddingLeft="5dp"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
@@ -55,11 +56,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="@string/l_theme_id"
-                    android:id="@+id/l_theme_id" />
+                    android:text="@string/l_theme_id" />
 
             <TextView
-                    android:paddingLeft="5dp"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
@@ -74,11 +75,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="@string/l_langue_niveau"
-                    android:id="@+id/l_langue_niveau" />
+                    android:text="@string/l_langue_niveau" />
 
             <TextView
-                    android:paddingLeft="5dp"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
@@ -93,11 +94,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="@string/l_francais"
-                    android:id="@+id/l_francais" />
+                    android:text="@string/l_francais" />
 
             <TextView
-                    android:paddingLeft="5dp"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
@@ -112,11 +113,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="@string/l_directeur"
-                    android:id="@+id/l_directeur" />
+                    android:text="@string/l_directeur" />
 
             <TextView
-                    android:paddingLeft="5dp"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
@@ -134,7 +135,8 @@
                     android:id="@+id/l_langue" />
 
             <TextView
-                    android:paddingLeft="5dp"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
@@ -149,11 +151,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="@string/l_pronunciation"
-                    android:id="@+id/l_pronunciation" />
+                    android:text="@string/l_pronunciation" />
 
             <TextView
-                    android:paddingLeft="5dp"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
@@ -168,11 +170,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="@string/l_date_rev"
-                    android:id="@+id/l_date_rev" />
+                    android:text="@string/l_date_rev" />
 
             <TextView
-                    android:paddingLeft="5dp"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
@@ -187,11 +189,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="@string/l_poids"
-                    android:id="@+id/l_poids" />
+                    android:text="@string/l_poids" />
 
             <TextView
-                    android:paddingLeft="5dp"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
@@ -206,11 +208,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="@string/l_nberr"
-                    android:id="@+id/l_nberr" />
+                    android:text="@string/l_nberr" />
 
             <TextView
-                    android:paddingLeft="5dp"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
@@ -225,11 +227,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="@string/l_dist_id"
-                    android:id="@+id/l_dist_id" />
+                    android:text="@string/l_dist_id" />
 
             <TextView
-                    android:paddingLeft="5dp"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
@@ -244,11 +246,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="@string/l_date_maj"
-                    android:id="@+id/l_date_maj" />
+                    android:text="@string/l_date_maj" />
 
             <TextView
-                    android:paddingLeft="5dp"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"

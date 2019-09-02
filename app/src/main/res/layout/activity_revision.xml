@@ -1,9 +1,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/verifierOuAutreQuestion"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="true"
+        android:focusable="true"
         android:orientation="vertical"
         tools:context="com.jmarzin.jmlangues.RevisionActivity">
 
@@ -52,12 +52,12 @@
                 android:layout_marginTop="20dp">
 
             <TextView
-                    android:id="@+id/inviteReponse"
                     style="@style/Base.TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/inviteReponse"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:labelFor="@+id/reponse"/>
 
             <EditText
                     android:id="@+id/reponse"
@@ -66,7 +66,8 @@
                     android:layout_height="wrap_content"
                     android:inputType="textMultiLine"
                     android:lines="3"
-                    android:maxLines="3" />
+                    android:maxLines="3"
+                    android:importantForAutofill="no" />
 
         </TableRow>
 
@@ -75,16 +76,15 @@
                 android:layout_height="wrap_content">
 
             <Space
-                    android:layout_width="20px"
-                    android:layout_height="20px" />
+                    android:layout_width="20dp"
+                    android:layout_height="20dp" />
 
             <TextView
                     android:id="@+id/texteReponse"
                     style="@style/Base.TextAppearance.AppCompat.Body2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:inputType="textMultiLine"
+                    android:layout_marginStart="10dp"
                     android:lines="2"
                     android:maxEms="12"
                     android:maxLines="5"
@@ -98,16 +98,15 @@
                 android:layout_height="wrap_content">
 
             <Space
-                    android:layout_width="20px"
-                    android:layout_height="20px" />
+                    android:layout_width="20dp"
+                    android:layout_height="20dp" />
 
             <TextView
                     android:id="@+id/prononciation"
                     style="@style/Base.TextAppearance.AppCompat.Body2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:inputType="textMultiLine"
+                    android:layout_marginStart="10dp"
                     android:lines="1"
                     android:maxLines="5"
                     android:text="@string/prononciation"
@@ -129,6 +128,7 @@
                 android:layout_gravity="center_horizontal"
                 android:baselineAlignBottom="true"
                 android:clickable="true"
+                android:focusable="true"
                 android:contentDescription="@string/boutonSpeaker"
                 android:cropToPadding="true"
                 android:longClickable="false"

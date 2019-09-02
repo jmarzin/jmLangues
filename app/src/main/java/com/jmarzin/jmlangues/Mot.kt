@@ -196,10 +196,10 @@ class Mot : ItemQuestionnable() {
             return where(cond1 + cond2 + cond3 + cond4 + cond5 + cond6)
         }
 
-        fun allemand(texte: String): String {
+        private fun allemand(texte: String): String {
             var regex = """\((.+?)\)""".toRegex()
             if (!texte.contains(regex)) return texte
-            var matchResult = regex.find(texte)
+            val matchResult = regex.find(texte)
             var entreP = matchResult!!.groupValues[1]
             var result = texte.replace(regex, "").trim()
             var aPrononcer = result
@@ -213,7 +213,13 @@ class Mot : ItemQuestionnable() {
                     val parts = entreP.split(" ")
                     val accent = parts[0]
                     entreP = parts[1]
-                    if (accent == "ä") result.replaceFirst("a", accent)
+                    val lettre = when(accent) {
+                        "ä" -> "a"
+                        "ö" -> "o"
+                        "ü" -> "u"
+                        else -> ""
+                    }
+                    if (lettre.isNotEmpty()) result.replaceFirst(lettre, accent)
                 }
                 aPrononcer += ", die " + result.replace(regex, "") + entreP
             }
@@ -234,10 +240,8 @@ class Mot : ItemQuestionnable() {
                 else -> "/"
             }
             val tableau = texte.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-            if (DSH.session.langueId() == "al" && a_prononcer) {
-                for (i in 0 until tableau.size) {
-                    tableau[i] = allemand(tableau[i])
-                }
+            if (DSH.session.langueId() == "al" && a_prononcer) for (i in tableau.indices) {
+                tableau[i] = allemand(tableau[i])
             }
             texteEclate = tableau[0]
             for (i in 1 until tableau.size) {
