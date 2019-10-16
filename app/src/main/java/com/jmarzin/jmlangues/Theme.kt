@@ -65,6 +65,13 @@ class Theme : TermeBase() {
             return findBy(selection)
         }
 
+        fun listeAvecNbMots(): Cursor = DSH.db().rawQuery(
+            "select themes._id, themes.numero, themes.langue, count(mots._id) as nombre from themes " +
+                    "inner join mots on mots.theme_id = themes.dist_id where themes.langue_id = ? " +
+                    "GROUP BY numero order by numero",
+            arrayOf(DSH.session.langueId())
+        )
+
         fun findMaxDateUpdate(langue: String): String {
             val cursor =
                 DSH.db().query(

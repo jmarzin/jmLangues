@@ -5,4 +5,5 @@
     <item name="text3" type="id"/>
     <item name="text4" type="id"/>
     <item name="text5" type="id"/>
+    <item name="nombre" type="id"/>
 </resources>

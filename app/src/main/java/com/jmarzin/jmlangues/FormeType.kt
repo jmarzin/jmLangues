@@ -92,6 +92,13 @@ class FormeType : TermeBase() {
             )
         }
 
+        fun listeAvecNbFormes(): Cursor = DSH.db().rawQuery(
+            "select formestypes._id, formestypes.numero, formestypes.langue, count(formes._id) as nombre from formestypes " +
+                    "inner join formes on formes.forme_type_numero = formestypes.numero and formes.langue_id = formestypes.langue_id where formestypes.langue_id = ? " +
+                    "GROUP BY formestypes.numero order by formestypes.numero",
+            arrayOf(DSH.session.langueId())
+        )
+
         fun majBase(
             table: JSONArray,
             langue: String,

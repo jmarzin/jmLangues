@@ -19,19 +19,19 @@ class VerbesActivity : MesActivites() {
 
         this.title = "  Verbes"
 
-        val mCursor = Verbe.where(
-            VerbeContract.VerbeTable.COLUMN_NAME_LANGUE_ID +
-                    " = \"" + DSH.session.langueId() + "\""
-        )
+        val mCursor = Verbe.listeAvecNbFormes()
 
         val adapter = SimpleCursorAdapter(
             this,
-            R.layout.ligne_simple,
+            R.layout.ligne_liste_avec_nombre,
             mCursor,
-            arrayOf(VerbeContract.VerbeTable.COLUMN_NAME_LANGUE),
-            intArrayOf(R.id.text1),
+            arrayOf(VerbeContract.VerbeTable.COLUMN_NAME_LANGUE, "nombre"),
+            intArrayOf(R.id.text2, R.id.nombre),
             0
         )
+
+        supportActionBar?.subtitle = "   " + mCursor.count.toString() + " verbe(s)"
+
         val listView = findViewById<ListView>(R.id.listView)
         listView.adapter = adapter
 

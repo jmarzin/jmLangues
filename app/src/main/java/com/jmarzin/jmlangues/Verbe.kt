@@ -91,6 +91,13 @@ class Verbe : TermeBase() {
             return mCursor
         }
 
+        fun listeAvecNbFormes(): Cursor = DSH.db().rawQuery(
+            "select verbes._id, verbes.langue, count(formes._id) as nombre from verbes " +
+                    "inner join formes on formes.verbe_id = verbes.dist_id where verbes.langue_id = ? " +
+                    "GROUP BY verbes.langue order by verbes.langue",
+            arrayOf(DSH.session.langueId())
+        )
+
         fun majBase(
             table: JSONArray,
             langue: String,

@@ -13,9 +13,8 @@
             android:gravity="center_vertical|end"
             android:minHeight="?android:attr/listPreferredItemHeightSmall"
             android:layout_weight="6"
-            android:paddingStart="5sp"
-            android:paddingEnd="5sp"
-            android:textSize="20sp" android:textAlignment="viewEnd"/>
+            android:textSize="16sp"
+            android:textAlignment="viewEnd"/>
     <TextView
             android:id="@id/text2"
             android:layout_width="match_parent"
@@ -25,5 +24,16 @@
             android:minHeight="?android:attr/listPreferredItemHeightSmall"
             android:layout_weight="1"
             android:layout_gravity=""
+            android:paddingStart="5sp"
+            android:paddingEnd="5sp"
             android:textSize="20sp"/>
+    <TextView
+            android:id="@id/nombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall"
+            android:gravity="center_vertical|end"
+            android:minHeight="?android:attr/listPreferredItemHeightSmall"
+            android:layout_weight="6"
+            android:textSize="16sp" />
 </LinearLayout>

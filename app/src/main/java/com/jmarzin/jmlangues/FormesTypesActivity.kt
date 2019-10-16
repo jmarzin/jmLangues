@@ -20,21 +20,23 @@ class FormesTypesActivity : MesActivites() {
 
         this.title = "  Temps"
 
-        val mCursor = FormeType.where(
-            FormeTypeContract.FormeTypeTable.COLUMN_NAME_LANGUE_ID +
-                    " = \"" + DSH.session.langueId() + "\"")
+        val mCursor = FormeType.listeAvecNbFormes()
 
         val adapter = SimpleCursorAdapter(
             this,
-            R.layout.ligne_liste,
+            R.layout.ligne_liste_avec_nombre,
             mCursor,
             arrayOf(
                 FormeTypeContract.FormeTypeTable.COLUMN_NAME_NUMERO,
-                FormeTypeContract.FormeTypeTable.COLUMN_NAME_LANGUE
+                FormeTypeContract.FormeTypeTable.COLUMN_NAME_LANGUE,
+                "nombre"
             ),
-            intArrayOf(R.id.text1, R.id.text2),
+            intArrayOf(R.id.text1, R.id.text2, R.id.nombre),
             0
         )
+
+        supportActionBar?.subtitle = "   " + mCursor.count.toString() + " temps"
+
         val listView = findViewById<ListView>(R.id.listView)
         listView.adapter = adapter
 

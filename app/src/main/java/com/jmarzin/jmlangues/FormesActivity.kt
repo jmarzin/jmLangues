@@ -59,12 +59,15 @@ class FormesActivity : MesActivites() {
 
         val adapter = SimpleCursorAdapter(
             this,
-            R.layout.ligne_simple,
+            R.layout.ligne_liste_avec_nombre,
             mCursor,
             arrayOf(FormeContract.FormeTable.COLUMN_NAME_LANGUE),
-            intArrayOf(R.id.text1),
+            intArrayOf(R.id.text2),
             0
         )
+
+        supportActionBar?.subtitle = "   " + mCursor?.count.toString() + " forme(s)"
+
         val listView = findViewById<ListView>(R.id.listView)
         listView.adapter = adapter
 

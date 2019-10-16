@@ -7,7 +7,6 @@ import android.widget.ListView
 import android.widget.SimpleCursorAdapter
 import com.jjoe64.graphview.GraphView
 import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter
-import com.jjoe64.graphview.helper.StaticLabelsFormatter
 import com.jjoe64.graphview.series.DataPoint
 import com.jjoe64.graphview.series.LineGraphSeries
 import java.text.ParseException
@@ -89,30 +88,31 @@ class StatsActivity : MesActivites() {
         formatter = SimpleDateFormat("dd/MM", Locale.FRANCE)
         graph.gridLabelRenderer.labelFormatter = DateAsXAxisLabelFormatter(baseContext, formatter)
 
-        val staticLabelsFormatter = StaticLabelsFormatter(graph)
+//        val staticLabelsFormatter = StaticLabelsFormatter(graph)
         if (datedebut != null && datefin == null) datefin = Date(datedebut.time.plus(24 * 3600000))
-        if (datedebut != null) {
-            graph.viewport.isXAxisBoundsManual = true
-            graph.viewport.setMinX(datedebut.time.toDouble())
-            graph.viewport.setMaxX(datefin!!.time.toDouble())
-            if (nbpoints % 2 == 1) {
-                staticLabelsFormatter.setHorizontalLabels(
-                    arrayOf(
-                        formatter.format(datedebut), formatter.format(
-                            Date((datefin.time + datedebut.time) / 2)
-                        ), formatter.format(datefin)
-                    )
-                )
-            } else {
-                staticLabelsFormatter.setHorizontalLabels(
-                    arrayOf(
-                        formatter.format(datedebut),
-                        formatter.format(datefin)
-                    )
-                )
-            }
-            graph.gridLabelRenderer.labelFormatter = staticLabelsFormatter
-        }
+//        if (datedebut != null) {
+//            graph.viewport.isXAxisBoundsManual = true
+//            graph.viewport.setMinX(datedebut!!.time.toDouble())
+//            graph.viewport.setMaxX(datefin!!.time.toDouble())
+//            graph.gridLabelRenderer.numHorizontalLabels = 0
+//            if (nbpoints % 2 == 1) {
+//                staticLabelsFormatter.setHorizontalLabels(
+//                    arrayOf(
+//                        formatter.format(datedebut), formatter.format(
+//                            Date((datefin.time + datedebut.time) / 2)
+//                        ), formatter.format(datefin)
+//                    )
+//                )
+//            } else {
+//                staticLabelsFormatter.setHorizontalLabels(
+//                    arrayOf(
+//                        formatter.format(datedebut),
+//                        formatter.format(datefin)
+//                    )
+//                )
+//            }
+//            graph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter)
+//        }
 
         when (max) {
             in 401..449 -> {

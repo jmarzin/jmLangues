@@ -19,22 +19,23 @@ class ThemesActivity : MesActivites() {
 
         this.title = "  Thèmes"
 
-        val mCursor = Theme.where(
-            ThemeContract.ThemeTable.COLUMN_NAME_LANGUE_ID +
-                    " = \"" + DSH.session.langueId() + "\""
-        )
+        val mCursor = Theme.listeAvecNbMots()
 
         val adapter = SimpleCursorAdapter(
             this,
-            R.layout.ligne_liste,
+            R.layout.ligne_liste_avec_nombre,
             mCursor,
             arrayOf(
                 ThemeContract.ThemeTable.COLUMN_NAME_NUMERO,
-                ThemeContract.ThemeTable.COLUMN_NAME_LANGUE
+                ThemeContract.ThemeTable.COLUMN_NAME_LANGUE,
+                "nombre"
             ),
-            intArrayOf(R.id.text1, R.id.text2),
+            intArrayOf(R.id.text1, R.id.text2, R.id.nombre),
             0
         )
+
+        supportActionBar?.subtitle = "   " + mCursor.count.toString() + " thème(s)"
+
         val listView = findViewById<ListView>(R.id.listView)
         listView.adapter = adapter
 
